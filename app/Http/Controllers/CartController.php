@@ -335,10 +335,13 @@ class CartController extends Controller
                 }
             }
             $shiprocketResponse = $this->createShiprocketOrder($shiprocketService, $validatedData, $order);
+            Log::info('shiprocketResponse');
+            Log::info($shiprocketResponse);
             if ($shiprocketResponse['status_code'] == 1) {
                 $this->finalizeOrder($order, $shiprocketResponse['shipment_id'], $validatedData);
-                Mail::to($validatedData['email'])->send(new orderMail($order));
-                return redirect()->back()->with('success', 'Order placed successfully with Cash on Delivery.');
+                Mail::to('vijay11@mailinator.com')->send(new orderMail($order));
+                return redirect()->route('payment.success', ['orderId' => $order->id])->with('message', 'Your order was successful!');
+                // return redirect()->back()->with('success', 'Order placed successfully with Cash on Delivery.');
             } else {
                 return redirect()->back()->with('error', 'Failed to create shipment with Shiprocket.');
             }
@@ -351,16 +354,16 @@ class CartController extends Controller
         return $request->validate([
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
-            'phone' => 'required|string|max:10',
-            'email' => 'required|string|email|max:255',
+            // 'phone' => 'required|string|max:10',
+            // 'email' => 'required|string|email|max:255',
             'address' => 'required|string|max:255',
             'house' => 'required|string|max:255',
             'city' => 'required|string|max:255',
             'state' => 'required|string|max:255',
-            'country' => 'required|string|max:255',
-            'postal_code' => 'required|numeric|digits:6',
+            // 'country' => 'required|string|max:255',
+            // 'postal_code' => 'required|numeric|digits:6',
             'zip' => 'required|numeric|digits:6',
-            'message' => 'nullable|string',
+            // 'message' => 'nullable|string',
             'total_weight' => 'required',
             'total_length' => 'required',
             'total_breadth' => 'required',
@@ -454,11 +457,11 @@ protected function prepareShiprocketOrderData($validatedData, $order)
         'billing_last_name' => $validatedData['last_name'],
         'billing_address' => $validatedData['address'],
         'billing_city' => $validatedData['city'],
-        'billing_pincode' => $validatedData['postal_code'],
+        'billing_pincode' => $validatedData['zip'],
         'billing_state' => $validatedData['state'],
-        'billing_country' => $validatedData['country'],
-        'billing_email' => $validatedData['email'],
-        'billing_phone' => $validatedData['phone'],
+        'billing_country' => $validatedData['country']??'INDIA',
+        'billing_email' => $validatedData['email']??'test@mailinator.com',
+        'billing_phone' => $validatedData['phone']??'9876543210',
         'shipping_is_billing' => true, // Set to true if shipping and billing addresses are the same
         'order_items' => array_map(function ($item) {
             // Ensure each item has required fields like SKU, tax, HSN

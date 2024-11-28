@@ -15,12 +15,12 @@ return new class extends Migration
             $table->id();
             $table->string('first_name');
             $table->string('last_name');
-            $table->string('phone');
-            $table->string('email');
+            $table->string('phone')->nullable();
+            $table->string('email')->nullable();
             $table->string('address');
             $table->string('city');
             $table->string('house');
-            $table->string('postal_code');
+            $table->string('postal_code')->nullable();
             $table->string('zip');
             $table->boolean('save_address')->default(false);
             $table->text('message')->nullable();
