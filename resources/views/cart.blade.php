@@ -688,10 +688,15 @@ document.addEventListener('DOMContentLoaded', function () {
     const couponInput = document.getElementById('coupon').value;
     console.log(couponInput);
     fetch(`/coupons/get/${couponInput}`)
-      .then(response => response.json())
+      .then(response => {
+        console.log('response',response.ok);
+        
+        return response.ok?response.json():null
+        })
       .then(data => {
+        console.log('data',data);
         if (data) {
-           console.log(data); 
+           console.log('ffff',data); 
          const discountAmount = data.percentage ? (data.percentage / 100) * parseFloat(document.getElementById('total_amount').value) : data.price;
           const newTotal = parseFloat(document.getElementById('total_amount').value) - discountAmount;
           var shipping = document.getElementById('total_amount').value
@@ -705,7 +710,8 @@ document.addEventListener('DOMContentLoaded', function () {
           document.getElementById('applycode_button').style.visibility = 'hidden';
           document.getElementById('coupon-applied-alert').style.visibility = 'visible';
         } else {
-          alert('Invalid coupon code.');
+            document.getElementById('coupon-message').innerHTML = 'Invalid coupon code.';
+            document.getElementById('coupon-message').style.color = 'red';
         }
       })
       .catch(error => {
