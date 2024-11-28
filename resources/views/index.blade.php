@@ -361,7 +361,7 @@
      <!-- Add to Cart Button -->
       
    <a href="#" onclick="showModal(event, {{ $item->id }})" class="btn btn-success btn-sm d-flex align-items-center">
-   <i class="fas fa-cart-plus me-1"></i> Buy Noww
+   <i class="fas fa-cart-plus me-1"></i> Buy Now
 </a>
 </div>
                                                                 <img src="{{ url('frontend/images/natural-logo.png') }}"
