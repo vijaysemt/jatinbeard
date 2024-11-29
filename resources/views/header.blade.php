@@ -24,7 +24,8 @@
     <!--== Bootstrap CSS ==-->
     <link href="{{ url('frontend/css/bootstrap.min.css') }}" rel="stylesheet" />
     <!--== Font-awesome Icons CSS ==-->
-    <link href="{{ url('frontend/css/font-awesome.min.css') }}" rel="stylesheet" />
+ <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+ <link href="{{ url('frontend/css/font-awesome.min.css') }}" rel="stylesheet" />
     <!--== Icofont Min Icons CSS ==-->
     <link href="{{ url('frontend/css/icofont.min.css') }}" rel="stylesheet" />
     <!--== Fontello CSS ==-->

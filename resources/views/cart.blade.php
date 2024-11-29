@@ -417,7 +417,9 @@ p, label {
                     </div>
                     
                     <div>
-            <p id="coupon-message" style="color: green"></p>
+            <p id="coupon-message" style="color: green">
+                
+            </p>
         </div>
         <hr />
        <!-- <div>
@@ -533,6 +535,7 @@ p, label {
         <div class="d-flex justify-content-between fw-bold">
             <span>Total Payable Amount</span>
             <span id="cart-total">₹{{ number_format($payabletotal, 2) }}/-</span>
+            <span id="actual_amount_store" hidden>{{ number_format($payabletotal, 2) }}</span>
         </div>
         
         <!-- Checkout Button -->
@@ -630,12 +633,12 @@ document.addEventListener('DOMContentLoaded', function () {
                     }
 
                     // Update cart totals
-                    const mrpTotalElement = document.getElementById('mrp-total');
+                    const mrpTotalElement = $('#mrp-total');
                     if (mrpTotalElement) {
                         mrpTotalElement.innerText = `₹${data.cartTotal.toFixed(2)}/-`;
                     }
 
-                    const cartTotalElement = document.getElementById('cart-total');
+                    const cartTotalElement = $('#cart-total');
                     if (cartTotalElement) {
                         cartTotalElement.innerText = `₹${data.cartTotal.toFixed(2)}/-`;
                     }
@@ -681,47 +684,54 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 });
-</script>
 
-<script>
-  function applyPromoCode() {
-    const couponInput = document.getElementById('coupon').value;
+ function applyPromoCode() {
+    const couponInput = $('#coupon').val(); // Get the coupon input value
     console.log(couponInput);
-    fetch(`/coupons/get/${couponInput}`)
-      .then(response => {
-        console.log('response',response.ok);
-        
-        return response.ok?response.json():null
-        })
-      .then(data => {
-        console.log('data',data);
-        if (data) {
-           console.log('ffff',data); 
-         const discountAmount = data.percentage ? (data.percentage / 100) * parseFloat(document.getElementById('total_amount').value) : data.price;
-          const newTotal = parseFloat(document.getElementById('total_amount').value) - discountAmount;
-          var shipping = document.getElementById('total_amount').value
-          /* document.getElementById('total').value = newTotal.toFixed(2);
-          document.getElementById('total_amount').value = newTotal;
-          document.getElementById('total_price').innerHTML = newTotal;*/
-          document.getElementById('cart-total').innerHTML = '₹' + (newTotal + <?php echo $shippingCharge; ?>).toFixed(2)+'/-';
-          document.getElementById('cop-total').innerHTML = '₹' + discountAmount+'/-';
-          document.getElementById('coupon-message').innerHTML = 'Coupon applied successfully!';
-          
-          document.getElementById('applycode_button').style.visibility = 'hidden';
-          document.getElementById('coupon-applied-alert').style.visibility = 'visible';
-        } else {
-            document.getElementById('coupon-message').innerHTML = 'Invalid coupon code.';
-            document.getElementById('coupon-message').style.color = 'red';
+
+    $.ajax({
+        url: `/coupons/get/${couponInput}`,
+        method: 'GET',
+        success: function (data) {
+            console.log('data', data);
+            if (data) {
+                console.log('Valid coupon:', data);
+
+                // Calculate the discount amount
+                const discountAmount = data.percentage 
+                    ? (data.percentage / 100) * parseFloat($('#total_amount').val()) 
+                    : data.price;
+
+                const newTotal = parseFloat($('#total_amount').val()) - discountAmount;
+
+                // Update UI
+                $('#cart-total').html('₹' + (newTotal + <?php echo $shippingCharge; ?>).toFixed(2) + '/-');
+                $('#cop-total').html('₹' + discountAmount.toFixed(2) + '/-');
+                $('#coupon-message').html(`Coupon applied successfully! <a href="javascript:;" style="color: red" onclick="removeCoupone(${discountAmount}, ${newTotal})">Remove</a>`).css('color', 'green');
+
+                // Hide apply button and show applied alert
+                $('#applycode_button').hide();
+                $('#coupon-applied-alert').css('visibility', 'visible');
+            } else {
+                $('#coupon-message').html('Invalid coupon code.').css('color', 'red');
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error('Error:', error);
+            // alert('Failed to apply coupon.');
+            $('#coupon-message').html('Invalid coupon code.').css('color', 'red');
         }
-      })
-      .catch(error => {
-        console.error('Error:', error);
-        console.log(response);
-        alert('Failed to apply coupon.');
-      });
+    });
+}
+
+  function removeCoupone(discountAmount,new_total) {
+     $('#coupon-message').html('');
+     $('#applycode_button').css('display', 'block');
+     $('#coupon-applied-alert').css('visibility', 'hidden');
+     const newTotal = parseFloat($('#total_amount').val()) + discountAmount;
+     $('#cart-total').html('₹' + ($('#actual_amount_store').html()) +'/-');
   }
-</script>
-<script>
+
     // Hide the alert div after 3 seconds
     setTimeout(function() {
         const alertBox = document.getElementById('alert-box');
