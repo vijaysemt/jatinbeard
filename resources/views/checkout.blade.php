@@ -275,7 +275,7 @@
                         </div>
 
                         <!-- Total amount -->
-                        <h6 class="card-title mb-3">Total Amount : {{ $total + $totalDeliveryCharge }}</h6>
+                        <h6 class="card-title mb-3">Total Amount : ₹ {{ $total + $totalDeliveryCharge }}</h6>
                         <input type="hidden" name="total_amount" id="total_amount"
                             value="{{ $total + $totalDeliveryCharge }}">
                         <!--<div class="form-outline mb-3">
