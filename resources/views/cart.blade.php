@@ -539,7 +539,12 @@ p, label {
         </div>
         
         <!-- Checkout Button -->
-        <button class="btn btn-success btn-block mt-3" onclick="location.href='/checkout'">Proceed to Checkout</button>
+        <form action="{{ route('cart.checkout') }}" method="POST">
+            @csrf
+            <input type="hidden" id="discount_amt" name="discountCouponAmount" value="0">
+            <button type="submit" class="btn btn-success btn-block mt-3">Proceed to Checkout</button>
+        </form>
+       
         <a href="{{ url('/') }}" class="btn btn-block mt-2" style='background-color: rgb(248, 90, 1); color: white;'>Back to Shop</a>
     </div>
 </div>
@@ -684,7 +689,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 });
-
+var discountAmount = 0;
  function applyPromoCode() {
     const couponInput = $('#coupon').val(); // Get the coupon input value
     console.log(couponInput);
@@ -698,7 +703,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 console.log('Valid coupon:', data);
 
                 // Calculate the discount amount
-                const discountAmount = data.percentage 
+                 discountAmount = data.percentage 
                     ? (data.percentage / 100) * parseFloat($('#total_amount').val()) 
                     : data.price;
 
@@ -712,6 +717,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 // Hide apply button and show applied alert
                 $('#applycode_button').hide();
                 $('#coupon-applied-alert').css('visibility', 'visible');
+                $('#discount_amt').val(discountAmount.toFixed(2));
             } else {
                 $('#coupon-message').html('Invalid coupon code.').css('color', 'red');
             }
@@ -730,6 +736,11 @@ document.addEventListener('DOMContentLoaded', function () {
      $('#coupon-applied-alert').css('visibility', 'hidden');
      const newTotal = parseFloat($('#total_amount').val()) + discountAmount;
      $('#cart-total').html('₹' + ($('#actual_amount_store').html()) +'/-');
+     $('#discount_amt').val('0');
+  }
+
+  function proceedToCheckout() {
+    location.href='/checkout/'
   }
 
     // Hide the alert div after 3 seconds

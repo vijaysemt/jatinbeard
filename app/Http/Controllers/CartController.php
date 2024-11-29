@@ -55,18 +55,22 @@ class CartController extends Controller
         return view('cart', compact('cartItems', 'total','totalQuantity','totalPriceOff', 'recommendedProducts','shippingCharge','subtotal','payabletotal'));
     }
 
-    public function checkout()
+    public function checkout(Request $request)
     {
+        $discountCouponAmount =  $request->discountCouponAmount;
         $guestUserId = $this->getGuestUserId();
 
         $cartItems = Cart::where('user_id', $guestUserId)->with('product')->get();
         $totalQuantity = $cartItems->sum('quantity');
+        
         $totalDeliveryCharge = $cartItems->sum(function($item) {
             return $item->product->delivery ?? 50;
         });
+        
         $total = $cartItems->sum(function($item) {
             return $item->product->price * $item->quantity;
         });
+        $total = $total - $discountCouponAmount;
         $total_weight = $cartItems->sum(function($item) {
             return $item->product->weight / 1000; // Convert ml to kg
         });

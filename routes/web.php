@@ -93,7 +93,7 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
     Route::get('/products', [ProductController::class, 'index'])->name('products.index');
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
-    Route::get('/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
+    Route::post('/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
     Route::post('/processCheckout', [CartController::class, 'processCheckout'])->name('cart.processCheckout');
     Route::get('/add-to-cart/{product}', [CartController::class, 'addToCart'])->name('cart.add');
     Route::get('/remove-from-cart/{id}', [CartController::class, 'removeFromCart'])->name('cart.remove');
