@@ -79,7 +79,7 @@
                                     @enderror
                                 </div>
                             </div>
-                            {{-- <div class="col-md-6 col-12 mb-3">
+                            <div class="col-md-6 col-12 mb-3">
                         <p class="mb-0">Phone</p>
                         <div class="form-outline">
                             <input type="tel" id="phone" name="phone"  value="{{ old('phone') }}" class="form-control @error('phone') is-invalid @enderror" required />
@@ -96,7 +96,7 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
-                    </div> --}}
+                    </div> 
                         </div>
 
                         <!-- Save address checkbox -->
@@ -152,7 +152,7 @@
                                     @enderror
                                 </div>
                             </div>
-                            {{-- <div class="col-md-4 col-12 mb-3">
+                           <div class="col-md-6 col-12 mb-3">
                                 <p class="mb-0">Country</p>
                                 <div class="form-outline">
                                     <input type="text" id="country" name="country"
@@ -162,7 +162,7 @@
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
-                            </div> --}}
+                            </div> 
                             {{-- <div class="col-md-4 col-12 mb-3">
                         <p class="mb-0">Postal code</p>
                         <div class="form-outline">
@@ -517,8 +517,8 @@
                             "name": document.getElementById('firstName').value + ' ' + document
                                 .getElementById(
                                     'lastName').value, // Prefilled name
-                            // "email": document.getElementById('email').value, // Prefilled email
-                            // "contact": document.getElementById('phone').value // Prefilled phone number
+                            "email": document.getElementById('email').value, // Prefilled email
+                            "contact": document.getElementById('phone').value // Prefilled phone number
                         },
                         "theme": {
                             "color": "#3399cc" // Custom theme color for Razorpay modal
@@ -558,6 +558,7 @@
                         // Populate city (district) and state fields
                         document.getElementById('city').value = postOffice.District;
                         document.getElementById('state').value = postOffice.State;
+                        document.getElementById('country').value = postOffice.Country;
 
 
                     } else {

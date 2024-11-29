@@ -339,8 +339,8 @@ class CartController extends Controller
             Log::info($shiprocketResponse);
             if ($shiprocketResponse['status_code'] == 1) {
                 $this->finalizeOrder($order, $shiprocketResponse['shipment_id'], $validatedData);
-                Mail::to('vijay11@mailinator.com')->send(new orderMail($order));
-                return redirect()->route('payment.success', ['orderId' => $order->id])->with('message', 'Your order was successful!');
+                // Mail::to($validatedData['email'])->send(new orderMail($order));
+                 return redirect()->route('payment.success', ['orderId' => $order->id])->with('message', 'Your order was successful!');
                 // return redirect()->back()->with('success', 'Order placed successfully with Cash on Delivery.');
             } else {
                 return redirect()->back()->with('error', 'Failed to create shipment with Shiprocket.');
@@ -354,13 +354,13 @@ class CartController extends Controller
         return $request->validate([
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
-            // 'phone' => 'required|string|max:10',
-            // 'email' => 'required|string|email|max:255',
+            'phone' => 'required|string|max:10',
+            'email' => 'required|string|email|max:255',
             'address' => 'required|string|max:255',
             'house' => 'required|string|max:255',
             'city' => 'required|string|max:255',
             'state' => 'required|string|max:255',
-            // 'country' => 'required|string|max:255',
+            'country' => 'required|string|max:255',
             // 'postal_code' => 'required|numeric|digits:6',
             'zip' => 'required|numeric|digits:6',
             // 'message' => 'nullable|string',
