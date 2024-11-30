@@ -42,7 +42,7 @@
     <link href="{{ url('frontend/css/custom.css') }}" rel="stylesheet" />
     <link href="{{ url('frontend/css/lightbox.css') }}" rel="stylesheet" />
     <link href="{{ url('frontend/css/lightbox.min.css') }}" rel="stylesheet" />
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <style>
         .border-gall {
             /*border: 1px solid #dfdfdf;*/
