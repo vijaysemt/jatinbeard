@@ -191,7 +191,7 @@
                     success: function(data) {
                         // Update the dashboard with the fetched data
                         $('#totalOrders').text(data.orders.total_orders);
-                        $('#totalAmount').text(data.orders.total_amount);
+                        $('#totalAmount').text('₹'+data.orders.total_amount);
                         $('#totalCOD').text(data.orders.total_cod_orders);
                         $('#totalRazorpay').text(data.orders.total_razorpay_orders);
                         $('#inStock').text(data.products.in_stock);

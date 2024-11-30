@@ -45,10 +45,10 @@ class HomeController extends Controller
             $endDate = now();
            
         } 
-        Log::info('start date');
-        Log::info($startDate);
-        Log::info('endDate');
-        Log::info($endDate);
+        // Log::info('start date');
+        // Log::info($startDate);
+        // Log::info('endDate');
+        // Log::info($endDate);
         // Fetch orders between the given date range
         $orders = Order::whereBetween('created_at', [$startDate, $endDate])->get();
 
