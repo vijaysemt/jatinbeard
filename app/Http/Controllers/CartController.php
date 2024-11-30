@@ -359,7 +359,7 @@ class CartController extends Controller
         return $request->validate([
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
-            'phone' => 'required|string|max:10',
+            'phone' => 'required|numeric|digits:10',
             'email' => 'required|string|email|max:255',
             'address' => 'required|string|max:255',
             'house' => 'required|string|max:255',

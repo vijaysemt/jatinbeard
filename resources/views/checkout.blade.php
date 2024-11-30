@@ -49,7 +49,7 @@
                         @csrf
                         <div class="row">
                             <div class="col-md-12 col-12 mb-3">
-                                <p class="mb-0">Pincode</p>
+                                <p class="mb-0">Enter Pincode of Location</p>
                                 <div class="form-outline">
                                     <input type="number" id="pincode" name="zip" value="{{ old('zip') }}"
                                         class="form-control @error('zip') is-invalid @enderror" required />
@@ -87,7 +87,7 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
-                    </div>
+                        </div>
                     <div class="col-md-6 col-12 mb-3">
                         <p class="mb-0">Email</p>
                         <div class="form-outline">
