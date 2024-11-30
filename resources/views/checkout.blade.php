@@ -12,6 +12,10 @@
         margin: 20px 0;
         background-color: #f9f9f9
     }
+    .form-group.required .control-label:after {
+        content:"*";
+        color:red;
+}
 </style>
 <div class="container my-5">
     <div class="row">
@@ -45,11 +49,11 @@
                             {{ session('error') }}
                         </div>
                     @endif
-                    <form id="orderForm" action="{{ route('cart.processCheckout') }}" method="POST">
+                    <form class="form-group required" id="orderForm" action="{{ route('cart.processCheckout') }}" method="POST">
                         @csrf
                         <div class="row">
                             <div class="col-md-12 col-12 mb-3">
-                                <p class="mb-0">Enter Pincode of Location</p>
+                                <label class="control-label mb-0">Enter Pincode of Location</label>
                                 <div class="form-outline">
                                     <input type="number" id="pincode" name="zip" value="{{ old('zip') }}"
                                         class="form-control @error('zip') is-invalid @enderror" required />
@@ -59,7 +63,7 @@
                                 </div>
                             </div>
                             <div class="col-md-6 col-12 mb-3">
-                                <p class="mb-0">First name</p>
+                                <label class="control-label mb-0">First name</label>
                                 <div class="form-outline">
                                     <input type="text" id="firstName" name="first_name"
                                         value="{{ old('first_name') }}"
@@ -70,7 +74,7 @@
                                 </div>
                             </div>
                             <div class="col-md-6 col-12 mb-3">
-                                <p class="mb-0">Last name</p>
+                                <label class="control-label mb-0">Last name</label>
                                 <div class="form-outline">
                                     <input type="text" id="lastName" name="last_name" value="{{ old('last_name') }}"
                                         class="form-control @error('last_name') is-invalid @enderror" required />
@@ -80,7 +84,7 @@
                                 </div>
                             </div>
                             <div class="col-md-6 col-12 mb-3">
-                        <p class="mb-0">Phone</p>
+                        <label class="control-label mb-0">Phone</label>
                         <div class="form-outline">
                             <input type="tel" id="phone" name="phone"  value="{{ old('phone') }}" class="form-control @error('phone') is-invalid @enderror" required />
                             @error('phone')
@@ -89,7 +93,7 @@
                         </div>
                         </div>
                     <div class="col-md-6 col-12 mb-3">
-                        <p class="mb-0">Email</p>
+                        <label class="control-label mb-0">Email</label>
                         <div class="form-outline">
                             <input type="email" id="email" name="email"  value="{{ old('email') }}" class="form-control @error('email') is-invalid @enderror" required />
                             @error('email')
@@ -110,7 +114,7 @@
                         <h5 class="card-title mb-3">Shipping info</h5> --}}
                         <div class="row">
                             <div class="col-sm-6 mb-3">
-                                <p class="mb-0">Flat,house number,floor,bulding</p>
+                                <label class="control-label mb-0">Flat,house number,floor,bulding</label>
                                 <div class="form-outline">
                                     <input type="text" id="address" name="address" value="{{ old('address') }}"
                                         class="form-control @error('address') is-invalid @enderror" required />
@@ -120,7 +124,7 @@
                                 </div>
                             </div>
                             <div class="col-md-6 col-12 mb-3">
-                                <p class="mb-0">Area,street,sector,village</p>
+                                <label class="control-label mb-0">Area,street,sector,village</label>
                                 <div class="form-outline">
                                     <input type="text" id="house" name="house" value="{{ old('house') }}"
                                         class="form-control @error('house') is-invalid @enderror" required />
@@ -131,7 +135,7 @@
                             </div>
 
                             <div class="col-sm-6 col-12 mb-3">
-                                <p class="mb-0">City</p>
+                                <label class="control-label mb-0">City</label>
                                 <div class="form-outline">
                                     <input type="text" id="city" name="city" value="{{ old('city') }}"
                                         class="form-control @error('city') is-invalid @enderror" required readonly />
@@ -143,7 +147,7 @@
 
 
                             <div class="col-md-6 col-12 mb-3">
-                                <p class="mb-0">State</p>
+                                <label class="control-label mb-0">State</label>
                                 <div class="form-outline">
                                     <input type="text" id="state" name="state" value="{{ old('state') }}"
                                         class="form-control @error('state') is-invalid @enderror" required readonly />
@@ -153,7 +157,7 @@
                                 </div>
                             </div>
                            <div class="col-md-6 col-12 mb-3">
-                                <p class="mb-0">Country</p>
+                                <label class="control-label mb-0">Country</label>
                                 <div class="form-outline">
                                     <input type="text" id="country" name="country"
                                         value="{{ old('country') }}"
@@ -164,7 +168,7 @@
                                 </div>
                             </div> 
                             {{-- <div class="col-md-4 col-12 mb-3">
-                        <p class="mb-0">Postal code</p>
+                        <label class="control-label mb-0">Postal code</label>
                         <div class="form-outline">
                             <input type="number" id="postalCode" name="postal_code"  value="{{ old('postal_code') }}" class="form-control @error('postal_code') is-invalid @enderror" required />
                             @error('postal_code')
@@ -173,7 +177,7 @@
                         </div>
                     </div> --}}
                             <!--<div class="col-md-4 col-12 mb-3">
-                        <p class="mb-0">Zip</p>
+                        <label class="control-label mb-0">Zip</label>
                         <div class="form-outline">
                             <input type="number" id="zip" name="zip"  value="{{ old('zip') }}"  class="form-control @error('zip') is-invalid @enderror" required />
                             @error('zip')
@@ -182,7 +186,7 @@
                         </div>
                     </div>-->
                             {{-- <div class="col-md-4 col-12  mb-3">
-                        <p class="mb-0">Gst Number(Optional)</p>
+                        <label class="control-label mb-0">Gst Number(Optional)</label>
                         <div class="form-outline">
                             <input type="number" id="gst" name="gst"  value="{{ old('gst') }}"  class="form-control @error('gst') is-invalid @enderror" />
                             @error('gst')
@@ -194,7 +198,7 @@
 
                         <!-- Message to seller -->
                         {{-- <div class="mb-3">
-                    <p class="mb-0">Message to seller</p>
+                    <label class="control-label mb-0">Message to seller</label>
                     <div class="form-outline">
                         <textarea class="form-control @error('message') is-invalid @enderror" id="message" name="message"  value="{{ old('message') }}"   rows="2"></textarea>
                         @error('message')
@@ -209,7 +213,7 @@
                             @foreach ($cartItems as $index => $item)
                                 <div class="row mb-3 ">
                                     <div class="col-sm-4">
-                                        <p class="mb-0">Product name</p>
+                                        <label class="control-label mb-0">Product name</label>
                                         <div class="form-outline">
                                             <input type="hidden"
                                                 name="order_items[{{ $index }}][product_name]"
@@ -218,7 +222,7 @@
                                         </div>
                                     </div>
                                     <div class="col-sm-4">
-                                        <p class="mb-0">Product price</p>
+                                        <label class="control-label mb-0">Product price</label>
                                         <div class="form-outline">
                                             <input type="hidden"
                                                 name="order_items[{{ $index }}][product_price]"
@@ -227,7 +231,7 @@
                                         </div>
                                     </div>
                                     <div class="col-sm-4">
-                                        <p class="mb-0">Quantity</p>
+                                        <label class="control-label mb-0">Quantity</label>
                                         <div class="form-outline">
                                             <input type="hidden" name="order_items[{{ $index }}][quantity]"
                                                 value="{{ $item->quantity }}" class="form-control" required
@@ -279,7 +283,7 @@
                         <input type="hidden" name="total_amount" id="total_amount"
                             value="{{ $total + $totalDeliveryCharge }}">
                         <!--<div class="form-outline mb-3">
-                    <p class="mb-0">Total Amount</p>
+                    <label class="control-label mb-0">Total Amount</p>
                     <input type="hidden" name="total_amount" id="total_amount" value="{{ $total + $totalDeliveryCharge }}">
                     <input type="text" id="total" class="form-control" value="{{ $total + $totalDeliveryCharge }}" readonly />
                 </div>-->
