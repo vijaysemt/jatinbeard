@@ -58,6 +58,7 @@ class CartController extends Controller
     public function checkout(Request $request)
     {
         $discountCouponAmount =  $request->discountCouponAmount;
+        $shippingCharge =  $request->shippingCharge;
         $guestUserId = $this->getGuestUserId();
 
         $cartItems = Cart::where('user_id', $guestUserId)->with('product')->get();

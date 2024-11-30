@@ -542,6 +542,8 @@ p, label {
         <form action="{{ route('cart.checkout') }}" method="POST">
             @csrf
             <input type="hidden" id="discount_amt" name="discountCouponAmount" value="0">
+            <input type="hidden" id="shipping_amt" name="shippingCharge" value="{{ number_format($shippingCharge, 2) }}">
+            
             <button type="submit" class="btn btn-success btn-block mt-3">Proceed to Checkout</button>
         </form>
        
