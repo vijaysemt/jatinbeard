@@ -1,9 +1,9 @@
 @extends('layouts.components.master')
 
 <body>
-   
 
 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <style>
         .card {
             border: 1px solid #f0f0f0;
@@ -63,14 +63,14 @@
                         <input type="text" id="rangeCalendar" class="form-control" placeholder="Select Date Range" />
                     </div>
                 </div>
-                
+
                 <div class="row mt-4">
                     <!-- Card 1: Orders -->
                     <div class="col-md-3">
                         <div class="card text-center">
                             <div class="card-body">
                                 <h4 class="card-title">Total Orders</h4>
-                                <p class="card-text display-4">150</p>
+                                <p class="card-text display-4" id="totalOrders">0</p>
                             </div>
                         </div>
                     </div>
@@ -79,7 +79,7 @@
                         <div class="card text-center">
                             <div class="card-body">
                                 <h4 class="card-title">Cash on delivery Orders</h4>
-                                <p class="card-text display-4">120</p>
+                                <p class="card-text display-4" id="totalCOD">0</p>
                             </div>
                         </div>
                     </div>
@@ -88,7 +88,7 @@
                         <div class="card text-center">
                             <div class="card-body">
                                 <h4 class="card-title">Razorpay Orders</h4>
-                                <p class="card-text display-4">30</p>
+                                <p class="card-text display-4" id="totalRazorpay">0</p>
                             </div>
                         </div>
                     </div>
@@ -97,16 +97,16 @@
                         <div class="card text-center">
                             <div class="card-body">
                                 <h4 class="card-title">Total Amount</h4>
-                                <p class="card-text display-4">₹15000</p>
+                                <p class="card-text display-4" id="totalAmount">₹0</p>
                             </div>
                         </div>
                     </div>
- <hr class="my-4" />
+                    <hr class="my-4" />
                     <div class="col-md-3">
                         <div class="card text-center">
                             <div class="card-body">
                                 <h4 class="card-title">Stock Items</h4>
-                                <p class="card-text display-4">85</p>
+                                <p class="card-text display-4" id="inStock">0</p>
                             </div>
                         </div>
                     </div>
@@ -115,7 +115,7 @@
                         <div class="card text-center">
                             <div class="card-body">
                                 <h4 class="card-title">Out of stock items</h4>
-                                <p class="card-text display-4">5</p>
+                                <p class="card-text display-4" id="outOfStock">0</p>
                             </div>
                         </div>
                     </div>
@@ -145,15 +145,62 @@
 
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script>
-        flatpickr("#rangeCalendar", {
-            mode: "range", // Enables range selection
-            dateFormat: "Y-m-d", // Format of the selected date range
-            defaultDate: [
-                new Date(new Date().getFullYear(), new Date().getMonth(), 1), // 1st of current month
-                new Date() // Today's date
-            ],
-            onChange: function(selectedDates, dateStr, instance) {
-                console.log("Selected Date Range:", dateStr);
+        $(document).ready(function() {
+
+            fetchDashboardData(); // Make an AJAX request to fetch data
+
+            flatpickr("#rangeCalendar", {
+                mode: "range", // Enables range selection
+                dateFormat: "Y-m-d", // Format of the selected date range
+                defaultDate: [
+                    new Date(new Date().getFullYear(), new Date().getMonth(),
+                        1), // 1st of current month
+                    new Date() // Today's date
+                ],
+                onChange: function(selectedDates, dateStr, instance) {
+                    console.log("Selected Date Range:", dateStr);
+                },
+                onClose: function(selectedDates) {
+                    console.log(selectedDates[0]);
+                    if (selectedDates.length === 2) {
+                        const startDate = selectedDates[0];
+                        const endDate = selectedDates[1];
+
+                        // Format as YYYY-MM-DD
+                        const formattedStartDate =
+                            `${startDate.getFullYear()}-${(startDate.getMonth() + 1).toString().padStart(2, '0')}-${startDate.getDate().toString().padStart(2, '0')}`;
+                        const formattedEndDate =
+                            `${endDate.getFullYear()}-${(endDate.getMonth() + 1).toString().padStart(2, '0')}-${endDate.getDate().toString().padStart(2, '0')}`;
+
+                        console.log('startDate', formattedStartDate);
+                        console.log('endDate', formattedEndDate);
+                        // Make an AJAX request to fetch data based on the selected date range
+                        fetchDashboardData(formattedStartDate, formattedEndDate)
+                    }
+                }
+            });
+
+            function fetchDashboardData(startDate = null, endDate = null) {
+                $.ajax({
+                    url: "{{ route('dashboard.data') }}",
+                    type: "GET",
+                    data: {
+                        start_date: startDate,
+                        end_date: endDate
+                    },
+                    success: function(data) {
+                        // Update the dashboard with the fetched data
+                        $('#totalOrders').text(data.orders.total_orders);
+                        $('#totalAmount').text(data.orders.total_amount);
+                        $('#totalCOD').text(data.orders.total_cod_orders);
+                        $('#totalRazorpay').text(data.orders.total_razorpay_orders);
+                        $('#inStock').text(data.products.in_stock);
+                        $('#outOfStock').text(data.products.out_of_stock);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error fetching data:', error);
+                    }
+                });
             }
         });
     </script>

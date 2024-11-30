@@ -18,6 +18,7 @@ use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\ProductgallController;
 use App\Http\Controllers\TopbarController;
 use App\Http\Controllers\couponController;
+use App\Http\Controllers\HomeController;
 
 
 /*
@@ -84,7 +85,8 @@ Auth::routes([
 
 
 Route::get('/admin', [FrontendController::class, 'admin'])->name('admin');
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/dashboard/data', [HomeController::class, 'fetchData'])->name('dashboard.data');
+Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 // Route::middleware(['auth'])->group(function () {
 //     Route::post('add-to-cart',[CartController::class, 'addproduct']);

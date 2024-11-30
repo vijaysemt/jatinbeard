@@ -1,10 +1,15 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Http\Request;
 
+use App\Models\Order;
+use App\Models\Product;
+
+use Illuminate\Support\Facades\Log; // Add this line to import the Log facade
 class HomeController extends Controller
 {
     /**
@@ -24,6 +29,51 @@ class HomeController extends Controller
      */
     public function index()
     {
+       
         return view('layouts.dashboard');
+    }
+
+    public function fetchData(Request $request)
+    {
+
+        $startDate = $request->input('start_date');
+        $endDate = $request->input('end_date');
+        if (!$startDate && !$endDate) {
+             // Get the first day of the current month
+            $startDate = now()->startOfMonth();
+            // Get today's date
+            $endDate = now();
+           
+        } 
+        Log::info('start date');
+        Log::info($startDate);
+        Log::info('endDate');
+        Log::info($endDate);
+        // Fetch orders between the given date range
+        $orders = Order::whereBetween('created_at', [$startDate, $endDate])->get();
+
+        // Calculate total orders and amounts
+        $totalOrders = $orders->count();
+        $totalAmount = $orders->sum('total_amount'); // Assuming there is an 'amount' column
+        $totalCODOrders = $orders->where('payment_method', 'Cash on Delivery')->count();
+        $totalRazorpayOrders = $orders->where('payment_method', 'Razorpay')->count();
+
+        // Fetch stock data for products
+        $inStockProductsCount = Product::where('stock', '>', 0)->count();
+        $outOfStockProductsCount = Product::where('stock', 0)->count();
+
+        // Return the data as a JSON response
+        return response()->json([
+            'orders' => [
+                'total_orders' => $totalOrders,
+                'total_amount' => $totalAmount,
+                'total_cod_orders' => $totalCODOrders,
+                'total_razorpay_orders' => $totalRazorpayOrders,
+            ],
+            'products' => [
+                'in_stock' => $inStockProductsCount,
+                'out_of_stock' => $outOfStockProductsCount,
+            ]
+        ]);
     }
 }
