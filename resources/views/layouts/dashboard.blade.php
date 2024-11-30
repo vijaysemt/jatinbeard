@@ -79,7 +79,7 @@
                         <div class="card text-center">
                             <div class="card-body">
                                 <h4 class="card-title">Cash on delivery Orders</h4>
-                                <p class="card-text display-4">320</p>
+                                <p class="card-text display-4">120</p>
                             </div>
                         </div>
                     </div>
@@ -88,7 +88,7 @@
                         <div class="card text-center">
                             <div class="card-body">
                                 <h4 class="card-title">Razorpay Orders</h4>
-                                <p class="card-text display-4">12</p>
+                                <p class="card-text display-4">30</p>
                             </div>
                         </div>
                     </div>
@@ -97,7 +97,7 @@
                         <div class="card text-center">
                             <div class="card-body">
                                 <h4 class="card-title">Total Amount</h4>
-                                <p class="card-text display-4">85</p>
+                                <p class="card-text display-4">₹15000</p>
                             </div>
                         </div>
                     </div>
@@ -115,7 +115,7 @@
                         <div class="card text-center">
                             <div class="card-body">
                                 <h4 class="card-title">Out of stock items</h4>
-                                <p class="card-text display-4">85</p>
+                                <p class="card-text display-4">5</p>
                             </div>
                         </div>
                     </div>
