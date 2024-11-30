@@ -591,7 +591,7 @@
 
 <script>
     let ship_charge = parseFloat("{{ $shippingCharge }}");
-    var discountAmount = 0;
+    var discount_amount = 0;
     document.addEventListener('DOMContentLoaded', function() {
         const qtyInputs = document.querySelectorAll('.qty-input');
         const incrementButtons = document.querySelectorAll('.increment-btn');
@@ -693,23 +693,23 @@
                     console.log('Valid coupon:', data);
 
                     // Calculate the discount amount
-                    discountAmount = data.percentage ?
+                    discount_amount = data.percentage ?
                         (data.percentage / 100) * parseFloat($('#total_amount').val()) :
                         data.price;
 
-                    const newTotal = parseFloat($('#total_amount').val()) - discountAmount;
+                    const newTotal = parseFloat($('#total_amount').val()) - discount_amount;
 
                     // Update UI
                     $('#cart-total').html('₹' + (newTotal + ship_charge).toFixed(2) + '/-');
-                    $('#cop-total').html('₹' + discountAmount.toFixed(2) + '/-');
+                    $('#cop-total').html('₹' + discount_amount.toFixed(2) + '/-');
                     $('#coupon-message').html(
-                        `Coupon applied successfully! <a href="javascript:;" style="color: red" onclick="removeCoupone(${discountAmount}, ${newTotal})">Remove</a>`
+                        `Coupon applied successfully! <a href="javascript:;" style="color: red" onclick="removeCoupone(${discount_amount}, ${newTotal})">Remove</a>`
                     ).css('color', 'green');
 
                     // Hide apply button and show applied alert
                     $('#applycode_button').hide();
                     $('#coupon-applied-alert').css('visibility', 'visible');
-                    $('#discount_amt').val(discountAmount.toFixed(2));
+                    $('#discount_amt').val(discount_amount.toFixed(2));
                 } else {
                     $('#coupon-message').html('Invalid coupon code.').css('color', 'red');
                 }
@@ -729,13 +729,13 @@
         const newTotal = parseFloat($('#total_amount').val()) + discountAmount;
         $('#cart-total').html('₹' + ($('#actual_amount_store').html()) + '/-');
         $('#discount_amt').val('0');
-        discountAmount = 0;
+        discount_amount = 0;
     }
 
     $('#proceed_checkout').on('click', function(e) {
         e.preventDefault();
         //set amount again for security reaso
-        $('#discount_amt').val(discountAmount);
+        $('#discount_amt').val(discount_amount);
         $('#shipping_amt').val(ship_charge);
         setTimeout(() => {
             $('#proceed_form').submit();
