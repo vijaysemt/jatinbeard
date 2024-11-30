@@ -24,8 +24,8 @@
     <!--== Bootstrap CSS ==-->
     <link href="{{ url('frontend/css/bootstrap.min.css') }}" rel="stylesheet" />
     <!--== Font-awesome Icons CSS ==-->
- <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
- <link href="{{ url('frontend/css/font-awesome.min.css') }}" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link href="{{ url('frontend/css/font-awesome.min.css') }}" rel="stylesheet" />
     <!--== Icofont Min Icons CSS ==-->
     <link href="{{ url('frontend/css/icofont.min.css') }}" rel="stylesheet" />
     <!--== Fontello CSS ==-->
@@ -51,7 +51,6 @@
             margin-bottom: 10px;
             overflow-y: scroll;
         }
-       
     </style>
 
 </head>
@@ -83,7 +82,7 @@
             <div class="alert alert-custom alert-dismissible fade show" role="alert">
 
                 @foreach (App\Models\Topbar::get() as $item)
-                  <marquee onmouseover="this.stop();" onmouseout="this.start();">  {!! $item->topbar !!} </marquee>
+                    <marquee onmouseover="this.stop();" onmouseout="this.start();"> {!! $item->topbar !!} </marquee>
                 @endforeach
 
                 <button type="button" class="btn-close custom-close-btn" data-bs-dismiss="alert"
@@ -158,12 +157,16 @@
                                         </a>
                                     </div>
                                     <div class="header-action-cart pe-md-4">
-    <a class="cart-icon" href="{{ url('/cart') }}">
-        <i class="icofont-shopping-cart"></i>
-         <span class="cart-count" style="@if (isset($totalQuantity) && $totalQuantity < 1) background-color: #ffffff @endif"> {{ $totalQuantity ?? '' }} </span>
+                                        <a class="cart-icon" href="{{ url('/cart') }}">
+                                            <i class="icofont-shopping-cart"></i>
+                                            @if(isset($totalQuantity) && $totalQuantity >= 1)
+                                            <span class="cart-count">
+                                                {{ $totalQuantity ?? '' }}
+                                             </span>
+                                            @endif
 
-    </a>
-</div>
+                                        </a>
+                                    </div>
                                     <div class="">
                                         <a class="cart-icon" href="tel:7307051100" target="_blank">
                                             <button
@@ -184,23 +187,22 @@
                 </div>
             </div>
         </header>
-        
-  <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    // Function to check if the device is iOS
-    function isiOS() {
-      return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-    }
 
-    // Apply specific CSS if the device is iOS
-    if (isiOS()) {
-      console.log('iOS device detected');
-      
-      // Create a new style element
-      const style = document.createElement('style');
-      style.textContent = ".product-rating { margin-left: 100px !important; }" ;
-      document.head.appendChild(style);
-    }
-  });
-</script>
-    
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // Function to check if the device is iOS
+                function isiOS() {
+                    return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+                }
+
+                // Apply specific CSS if the device is iOS
+                if (isiOS()) {
+                    console.log('iOS device detected');
+
+                    // Create a new style element
+                    const style = document.createElement('style');
+                    style.textContent = ".product-rating { margin-left: 100px !important; }";
+                    document.head.appendChild(style);
+                }
+            });
+        </script>
