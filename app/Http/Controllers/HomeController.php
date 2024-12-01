@@ -37,8 +37,8 @@ class HomeController extends Controller
     public function fetchData(Request $request)
     {
 
-        $startDate = $request->input('start_date');
-        $endDate = $request->input('end_date');
+        $startDate = $request->input('start_date'). ' 00:00:00'; // Start of the day
+        $endDate = $request->input('end_date').' 23:59:59';    // End of the day;
         if (!$startDate && !$endDate) {
              // Get the first day of the current month
             $startDate = now()->startOfMonth();
@@ -48,10 +48,10 @@ class HomeController extends Controller
             $endDate = Carbon::parse($endDate)->endOfDay();  // Ensure end date is at the end of the day (23:59:59)
             
         } 
-        // Log::info('start date');
-        // Log::info($startDate);
-        // Log::info('endDate');
-        // Log::info($endDate);
+        Log::info('start date');
+        Log::info($startDate);
+        Log::info('endDate');
+        Log::info($endDate);
         // Fetch orders between the given date range
         $orders = Order::where('created_at', '>=', $startDate) // Start date filter
         ->where('created_at', '<=', $endDate)->get();
