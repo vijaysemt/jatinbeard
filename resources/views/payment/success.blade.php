@@ -43,10 +43,10 @@
 
 .checkmark-kick {
     position: absolute;
-    width: 31px;
+    width: 26px;
     height: 7px;
     background-color: #4CAF50;
-    left: 11px;
+    left: 16px;
     top: 23px;
 }
 </style>

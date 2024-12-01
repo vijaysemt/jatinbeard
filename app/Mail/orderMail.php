@@ -17,6 +17,6 @@ class OrderMail extends Mailable
         $this->order = $order;
     }
     public function build(){
-        return $this->view('emails.ordermail', ['order' => $this->order]);
+        return $this->subject('Test Email')->view('email.ordermail', ['order' => $this->order]);
     }
 }

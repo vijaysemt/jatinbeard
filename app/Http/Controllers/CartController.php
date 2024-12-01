@@ -1,7 +1,8 @@
 <?php
+
 namespace App\Http\Controllers;
 
-use App\Mail\orderMail;
+use App\Mail\OrderMail;
 use App\Models\Cart;
 use App\Models\Product;
 use Razorpay\Api\Api;
@@ -31,7 +32,7 @@ class CartController extends Controller
 
     //     return session('guest_user_id');
     // }
-    
+
     use HandlesGuestUserId;
 
 
@@ -41,18 +42,22 @@ class CartController extends Controller
         $guestUserId = $this->getGuestUserId();
         $cartItems = Cart::where('user_id', $guestUserId)->with('product')->get();
         $totalQuantity = $cartItems->sum('quantity');
-        $totalPriceOff = $cartItems->sum(function($item) { return max($item->product->oprice - $item->product->price, 0) * $item->quantity; });
+        $totalPriceOff = $cartItems->sum(function ($item) {
+            return max($item->product->oprice - $item->product->price, 0) * $item->quantity;
+        });
         // Fetch recommended products, excluding those already in the cart
         $cartProductIds = $cartItems->pluck('product_id');
-        $recommendedProducts = Product::whereNotIn('id', $cartProductIds) ->inRandomOrder() ->take(3) ->get();
+        $recommendedProducts = Product::whereNotIn('id', $cartProductIds)->inRandomOrder()->take(3)->get();
         // Get the highest delivery charge
-        $shippingCharge = $cartItems->max(function($item) { return $item->product->delivery; });
-        $total = $cartItems->sum(function($item) {
+        $shippingCharge = $cartItems->max(function ($item) {
+            return $item->product->delivery;
+        });
+        $total = $cartItems->sum(function ($item) {
             return $item->product->oprice * $item->quantity;
         });
         $subtotal = $total - $totalPriceOff;
         $payabletotal = $subtotal + $shippingCharge;
-        return view('cart', compact('cartItems', 'total','totalQuantity','totalPriceOff', 'recommendedProducts','shippingCharge','subtotal','payabletotal'));
+        return view('cart', compact('cartItems', 'total', 'totalQuantity', 'totalPriceOff', 'recommendedProducts', 'shippingCharge', 'subtotal', 'payabletotal'));
     }
 
     public function checkout(Request $request)
@@ -63,29 +68,29 @@ class CartController extends Controller
 
         $cartItems = Cart::where('user_id', $guestUserId)->with('product')->get();
         $totalQuantity = $cartItems->sum('quantity');
-        
-        $totalDeliveryCharge = $cartItems->sum(function($item) {
+
+        $totalDeliveryCharge = $cartItems->sum(function ($item) {
             return $item->product->delivery ?? 50;
         });
-        
-        $total = $cartItems->sum(function($item) {
+
+        $total = $cartItems->sum(function ($item) {
             return $item->product->price * $item->quantity;
         });
         $total = $total - $discountCouponAmount;
-        $total_weight = $cartItems->sum(function($item) {
+        $total_weight = $cartItems->sum(function ($item) {
             return $item->product->weight / 1000; // Convert ml to kg
         });
-        $total_height = $cartItems->sum(function($item) {
+        $total_height = $cartItems->sum(function ($item) {
             return $item->product->height;
         });
-        $total_breadth = $cartItems->sum(function($item) {
+        $total_breadth = $cartItems->sum(function ($item) {
             return $item->product->breadth;
         });
-        $total_length = $cartItems->sum(function($item) {
+        $total_length = $cartItems->sum(function ($item) {
             return $item->product->length;
         });
 
-        return view('checkout', compact('cartItems', 'total','total_weight','total_length','total_breadth','total_height','totalDeliveryCharge','totalQuantity'));
+        return view('checkout', compact('cartItems', 'total', 'total_weight', 'total_length', 'total_breadth', 'total_height', 'totalDeliveryCharge', 'totalQuantity'));
     }
 
 
@@ -134,7 +139,7 @@ class CartController extends Controller
 
             // Calculate the new cart total
             $cartItems = Cart::where('user_id', $guestUserId)->get();
-            $cartTotal = $cartItems->sum(function($item) {
+            $cartTotal = $cartItems->sum(function ($item) {
                 return $item->product->price * $item->quantity;
             });
 
@@ -232,7 +237,7 @@ class CartController extends Controller
     //                 $order->shipment_id = $shiprocketResponse['shipment_id'];
     //                 $order->save();
     //                 session()->flash('success', 'Order placed successfully! Shipment ID: ' . $shiprocketResponse['shipment_id']);
-    //                 Mail::to($validatedData['email'])->send(new orderMail($order));
+    //                 Mail::to($validatedData['email'])->send(new OrderMail($order));
     //                 Cart::where('user_id', $guestUserId)->delete();
     //             } else {
     //                 session()->flash('error', 'Failed to create shipment with Shiprocket.');
@@ -300,7 +305,7 @@ class CartController extends Controller
     //             $order->shipment_id = $shiprocketResponse['shipment_id'];
     //             $order->save();
     //             session()->flash('success', 'Order placed successfully! Shipment ID: ' . $shiprocketResponse['shipment_id']);
-    //             Mail::to($validatedData['email'])->send(new orderMail($order));
+    //             Mail::to($validatedData['email'])->send(new OrderMail($order));
     //         } else {
     //             // Failure, handle it appropriately
     //             session()->flash('error', 'Failed to create shipment with Shiprocket.');
@@ -312,6 +317,11 @@ class CartController extends Controller
 
     public function processCheckout(Request $request, ShiprocketService $shiprocketService)
     {
+        // $email = $request->input('email');
+        // $data = ['message' => 'This is a test email.'];
+        // $order = Order::create($request->all());
+        // Mail::to('vijay11@mailinator.com')->send(new OrderMail($order));
+        // return;
         $validatedData = $this->validateCheckoutData($request);
         try {
             $guestUserId = $this->getGuestUserId();
@@ -329,11 +339,10 @@ class CartController extends Controller
                 Log::info($shiprocketResponse);
                 if ($shiprocketResponse['status_code'] == 1) {
                     $this->finalizeOrder($order, $shiprocketResponse['shipment_id'], $validatedData);
-                     return redirect()->route('payment.success', ['orderId' => $order->id])->with('message', 'Your order was successful!');
-                    //$this->captureRazorpayPayment($validatedData, $order->razorpay_order_id);
-                    //Mail::to($validatedData['email'])->send(new orderMail($order));
-                    
-                   // return redirect()->back()->with('success', 'Order placed and payment captured successfully!');
+                    $this->captureRazorpayPayment($validatedData, $order->razorpay_order_id);
+                    Mail::to($validatedData['email'])->send(new OrderMail($order));
+                    return redirect()->route('payment.success', ['orderId' => $order->id])->with('message', 'Your order was successful!');
+                    // return redirect()->back()->with('success', 'Order placed and payment captured successfully!');
                 } else {
                     session()->flash('error', 'Failed to create shipment with Shiprocket.');
                     return redirect()->back()->with('error', 'Order failed: Shipment creation failed.');
@@ -344,8 +353,8 @@ class CartController extends Controller
             Log::info($shiprocketResponse);
             if ($shiprocketResponse['status_code'] == 1) {
                 $this->finalizeOrder($order, $shiprocketResponse['shipment_id'], $validatedData);
-                // Mail::to($validatedData['email'])->send(new orderMail($order));
-                 return redirect()->route('payment.success', ['orderId' => $order->id])->with('message', 'Your order was successful!');
+                Mail::to($validatedData['email'])->send(new OrderMail($order));
+                return redirect()->route('payment.success', ['orderId' => $order->id])->with('message', 'Your order was successful!');
                 // return redirect()->back()->with('success', 'Order placed successfully with Cash on Delivery.');
             } else {
                 return redirect()->back()->with('error', 'Failed to create shipment with Shiprocket.');
@@ -390,126 +399,129 @@ class CartController extends Controller
         ]);
     }
 
-protected function saveOrderItems($order, $orderItems)
-{
-    foreach ($orderItems as $item) {
-        $order->orderItems()->create($item);
-    }
-}
-
-protected function createRazorpayOrder($validatedData, $order)
-{
-    $api = new Api(config('services.razorpay.key'), config('services.razorpay.secret'));
-    return $api->order->create([
-        'receipt' => 'order_rcptid_' . $order->id,
-        'amount' => $validatedData['total_amount'] * 100, // Amount in paise
-        'currency' => 'INR',
-    ]);
-}
-
-protected function captureRazorpayPayment($validatedData, $razorpayOrderId)
-{
-    $keyId = config('services.razorpay.key');
-    $keySecret = config('services.razorpay.secret');
-    $paymentId = $validatedData['razorpay_payment_id'];
-    $amount = $validatedData['total_amount'] * 100; // Amount in paise (smallest unit)
-    $response = Http::withBasicAuth($keyId, $keySecret)
-        ->post("https://api.razorpay.com/v1/payments/{$paymentId}/capture", [
-            'amount' => $amount, // Amount in smallest currency unit
-            'currency' => 'INR'
-        ]);
-
-    if ($response->successful() && $response->json('status') === 'captured') {
-        $order = Order::where('razorpay_order_id', $razorpayOrderId)->first();
-        if ($order) {
-            $order->payment_status = 'captured';
-            $order->transaction_id = $paymentId;
-            $order->save();
-        } else {
-            throw new \Exception('Order not found for the given Razorpay Order ID.');
-        }
-    } else {
-        throw new \Exception('Failed to capture Razorpay payment: ' . $response->body());
-    }
-}
-
-
-protected function createShiprocketOrder($shiprocketService, $validatedData, $order)
-{
-    // Prepare order data for Shiprocket
-    $orderData = $this->prepareShiprocketOrderData($validatedData, $order);
-
-    // Create shipment using Shiprocket API
-    return $shiprocketService->createOrder($orderData);
-}
-
-protected function prepareShiprocketOrderData($validatedData, $order)
-{
-    // Determine the payment method
-    if ($validatedData['payment_method'] === 'Cash on Delivery') {
-        $payment_method = 'COD';
-    } else {
-        $payment_method = 'prepaid';
-    }
-
-    // Prepare the order data for Shiprocket API
-    return [
-        'order_id' => $order->id,
-        'order_date' => now(), // Current timestamp
-        "channel_id" => "5631500", // Channel ID - should be checked if dynamic
-        'pickup_location' => 'Primary', // Pickup location can be dynamic if needed
-        'billing_customer_name' => $validatedData['first_name'],
-        'billing_last_name' => $validatedData['last_name'],
-        'billing_address' => $validatedData['address'],
-        'billing_city' => $validatedData['city'],
-        'billing_pincode' => $validatedData['zip'],
-        'billing_state' => $validatedData['state'],
-        'billing_country' => $validatedData['country']??'INDIA',
-        'billing_email' => $validatedData['email']??'test@mailinator.com',
-        'billing_phone' => $validatedData['phone']??'9876543210',
-        'shipping_is_billing' => true, // Set to true if shipping and billing addresses are the same
-        'order_items' => array_map(function ($item) {
-            // Ensure each item has required fields like SKU, tax, HSN
-            return [
-                'name' => $item['product_name'],
-                'sku' => $item['sku'] ?? '', // Fallback to empty string if SKU is missing
-                'units' => $item['quantity'],
-                'selling_price' => $item['product_price'],
-                'discount' => 0, // Assuming no discount for now
-                'tax' => $item['tax'] ?? 0, // Fallback to 0 if tax is missing
-                'hsn' => $item['hsn'] ?? '', // Fallback to empty string if HSN is missing
-            ];
-        }, $validatedData['order_items']),
-        'payment_method' => $payment_method,
-        'sub_total' => $validatedData['total_amount'],
-        'length' => $validatedData['total_length'], // cm
-        'breadth' => $validatedData['total_breadth'], // cm
-        'height' => $validatedData['total_height'], // cm
-        'weight' => $validatedData['total_weight'], // kg
-    ];
-}
-
-protected function finalizeOrder($order, $shipmentId, $validatedData)
-{
-    // Update shipment ID and save the order
-    $order->shipment_id = $shipmentId;
-    $order->save();
-
-    // Send order confirmation email
-    // Mail::to($validatedData['email'])->send(new orderMail($order));
-
-    // Clear the cart for the user
-    Cart::where('user_id', $validatedData['user_id'])->delete();
-
-   
-    // Flash a success message
-    session()->flash('success', 'Order placed successfully! Shipment ID: ' . $shipmentId);
-}
-
-public function createOrder(Request $request)
+    protected function saveOrderItems($order, $orderItems)
     {
-        $api = new Api(env('RAZORPAY_KEY'), env('RAZORPAY_SECRET'));
+        foreach ($orderItems as $item) {
+            $order->orderItems()->create($item);
+        }
+    }
 
+    protected function createRazorpayOrder($validatedData, $order)
+    {
+        $api = new Api(config('services.razorpay.key'), config('services.razorpay.secret'));
+        return $api->order->create([
+            'receipt' => 'order_rcptid_' . $order->id,
+            'amount' => $validatedData['total_amount'] * 100, // Amount in paise
+            'currency' => 'INR',
+        ]);
+    }
+
+    protected function captureRazorpayPayment($validatedData, $razorpayOrderId)
+    {
+        $keyId = config('services.razorpay.key');
+        $keySecret = config('services.razorpay.secret');
+        $paymentId = $validatedData['razorpay_payment_id'];
+        $amount = $validatedData['total_amount'] * 100; // Amount in paise (smallest unit)
+        $response = Http::withBasicAuth($keyId, $keySecret)
+            ->post("https://api.razorpay.com/v1/payments/{$paymentId}/capture", [
+                'amount' => $amount, // Amount in smallest currency unit
+                'currency' => 'INR'
+            ]);
+             
+        if ($response->successful() && $response->json('status') === 'captured') {
+            $order = Order::where('razorpay_order_id', $razorpayOrderId)->first();
+            if ($order) {
+                $order->payment_status = 'captured';
+                $order->transaction_id = $paymentId;
+                $order->save();
+            } else {
+                Log::error('Order not found for the given Razorpay Order ID.');
+                // throw new \Exception('Order not found for the given Razorpay Order ID.');
+            }
+        } else {
+            Log::error('Failed to capture payment. Response body: ' . $response->body());
+            //  throw new \Exception('Failed to capture Razorpay payment: ' . $response->body());
+            // return;
+        }
+    }
+
+
+    protected function createShiprocketOrder($shiprocketService, $validatedData, $order)
+    {
+        // Prepare order data for Shiprocket
+        $orderData = $this->prepareShiprocketOrderData($validatedData, $order);
+
+        // Create shipment using Shiprocket API
+        return $shiprocketService->createOrder($orderData);
+    }
+
+    protected function prepareShiprocketOrderData($validatedData, $order)
+    {
+        // Determine the payment method
+        if ($validatedData['payment_method'] === 'Cash on Delivery') {
+            $payment_method = 'COD';
+        } else {
+            $payment_method = 'prepaid';
+        }
+
+        // Prepare the order data for Shiprocket API
+        return [
+            'order_id' => $order->id,
+            'order_date' => now(), // Current timestamp
+            "channel_id" => "5631500", // Channel ID - should be checked if dynamic
+            'pickup_location' => 'Primary', // Pickup location can be dynamic if needed
+            'billing_customer_name' => $validatedData['first_name'],
+            'billing_last_name' => $validatedData['last_name'],
+            'billing_address' => $validatedData['address'],
+            'billing_city' => $validatedData['city'],
+            'billing_pincode' => $validatedData['zip'],
+            'billing_state' => $validatedData['state'],
+            'billing_country' => $validatedData['country'] ?? 'INDIA',
+            'billing_email' => $validatedData['email'] ?? 'test@mailinator.com',
+            'billing_phone' => $validatedData['phone'] ?? '9876543210',
+            'shipping_is_billing' => true, // Set to true if shipping and billing addresses are the same
+            'order_items' => array_map(function ($item) {
+                // Ensure each item has required fields like SKU, tax, HSN
+                return [
+                    'name' => $item['product_name'],
+                    'sku' => $item['sku'] ?? '', // Fallback to empty string if SKU is missing
+                    'units' => $item['quantity'],
+                    'selling_price' => $item['product_price'],
+                    'discount' => 0, // Assuming no discount for now
+                    'tax' => $item['tax'] ?? 0, // Fallback to 0 if tax is missing
+                    'hsn' => $item['hsn'] ?? '', // Fallback to empty string if HSN is missing
+                ];
+            }, $validatedData['order_items']),
+            'payment_method' => $payment_method,
+            'sub_total' => $validatedData['total_amount'],
+            'length' => $validatedData['total_length'], // cm
+            'breadth' => $validatedData['total_breadth'], // cm
+            'height' => $validatedData['total_height'], // cm
+            'weight' => $validatedData['total_weight'], // kg
+        ];
+    }
+
+    protected function finalizeOrder($order, $shipmentId, $validatedData)
+    {
+        // Update shipment ID and save the order
+        $order->shipment_id = $shipmentId;
+        $order->save();
+
+        // Send order confirmation email
+        // Mail::to($validatedData['email'])->send(new OrderMail($order));
+
+        // Clear the cart for the user
+        Cart::where('user_id', $validatedData['user_id'])->delete();
+
+
+        // Flash a success message
+        session()->flash('success', 'Order placed successfully! Shipment ID: ' . $shipmentId);
+    }
+
+    public function createOrder(Request $request)
+    {
+        // $api = new Api(config('services.razorpay.key'), config('services.razorpay.secret'));
+        $api = new Api(config('services.razorpay.key'), config('services.razorpay.secret'));
         $orderData = [
             'receipt'         => 'order_rcpt_' . time(),
             'amount'          => $request->amount * 100, // Amount in paise
@@ -521,16 +533,16 @@ public function createOrder(Request $request)
             $order = $api->order->create($orderData); // Create Razorpay order
             return response()->json([
                 'order_id' => $order['id'],
-                'key'      => env('RAZORPAY_KEY'),
+                'key'      => config('services.razorpay.key'),
             ]);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
-    
-     public function verifyPayment(Request $request)
+
+    public function verifyPayment(Request $request)
     {
-        $api = new Api(env('RAZORPAY_KEY'), env('RAZORPAY_SECRET'));
+        $api = new Api(config('services.razorpay.key'), config('services.razorpay.secret'));
 
         $attributes = [
             'razorpay_signature'  => $request->razorpay_signature,
@@ -545,22 +557,19 @@ public function createOrder(Request $request)
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
-    
+
     public function showSuccessPage($orderId)
     {
         // Retrieve the order from the database by its ID
         $order = Order::find($orderId);
-    
+
         if (!$order) {
             return redirect()->route('index')->with('error', 'Order not found.');
         }
-    
+
         // Retrieve the success message from the session
         $message = session('message');
-    
+
         return view('payment.success', compact('order', 'message'));
     }
-
-
-
 }
