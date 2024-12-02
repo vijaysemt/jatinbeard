@@ -10,6 +10,7 @@ use App\Models\Order;
 
 class OrderMail extends Mailable
 {
+    
     use Queueable, SerializesModels;
     protected $order;
 
