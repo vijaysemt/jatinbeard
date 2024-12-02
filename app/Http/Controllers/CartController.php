@@ -326,7 +326,6 @@ class CartController extends Controller
         $validatedData = $this->validateCheckoutData($request);
        
         try {
-           
             $guestUserId = $this->getGuestUserId();
             $validatedData['user_id'] = $guestUserId;
             $validatedData['shipment_id'] = '0';
