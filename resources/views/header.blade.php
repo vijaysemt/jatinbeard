@@ -159,11 +159,10 @@
                                     <div class="header-action-cart pe-md-4">
                                         <a class="cart-icon" href="{{ url('/cart') }}">
                                             <i class="icofont-shopping-cart"></i>
-                                            @if(isset($totalQuantity) && $totalQuantity >= 1)
-                                            <span class="cart-count">
+                                            <span class="cart-count" @if(!isset($totalQuantity) || $totalQuantity < 1) hidden @endif>
                                                 {{ $totalQuantity ?? '' }}
-                                             </span>
-                                            @endif
+                                            </span>
+                                           
 
                                         </a>
                                     </div>
