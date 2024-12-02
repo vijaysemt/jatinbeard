@@ -322,11 +322,15 @@ class CartController extends Controller
         // $order = Order::create($request->all());
         // Mail::to('vijay11@mailinator.com')->send(new OrderMail($order));
         // return;
+       
         $validatedData = $this->validateCheckoutData($request);
+       
         try {
+           
             $guestUserId = $this->getGuestUserId();
             $validatedData['user_id'] = $guestUserId;
             $validatedData['shipment_id'] = '0';
+            $validatedData['gst'] = $request['gst'];
             // $validatedData['razorpay_order_id'] = '0';
             $order = Order::create($validatedData);
             $this->saveOrderItems($order, $validatedData['order_items']);

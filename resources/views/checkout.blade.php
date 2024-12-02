@@ -165,6 +165,16 @@
                                     @enderror
                                 </div>
                             </div>
+                            <div class="col-md-6 col-12  mb-3">
+                                <p class="mb-0">Gst Number(Optional)</p>
+                                <div class="form-outline">
+                                    <input type="number" id="gst" name="gst"  value="{{ old('gst') }}"  class="form-control @error('gst') is-invalid @enderror" />
+                                    @error('gst')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
 
                             <!--<hr class="my-4" />-->
                             <h5 class="card-title mb-3" style='display:none'>Products</h5>
@@ -271,6 +281,48 @@
             e.preventDefault();
             let paymentMethod = $('input[name="payment_method"]:checked').val();
 
+
+            // Clear previous error messages and reset previous invalid states
+            $('.invalid-feedback').remove(); // Remove error messages
+            $('input').removeClass('is-invalid'); // Remove the invalid class from fields
+            let valid = true;
+             // Check if required fields are filled (excluding hidden fields)
+            $('input[required]:visible').each(function() {
+                let field = $(this);
+                let fieldName = field.attr('name');
+
+                // Check if field is empty or invalid
+                if (field.val() === '') {
+                    valid = false;
+                    field.addClass('is-invalid');
+                    field.after('<div class="invalid-feedback">This field is required.</div>');
+                } else {
+                    field.removeClass('is-invalid');
+                }
+            });
+            // Phone number validation (ensure it's exactly 10 digits)
+            // Phone number validation (remove leading zero and ensure it's 10 digits)
+            let phone = $('#phone').val().trim();
+
+            // Remove leading zero if the phone number starts with '0'
+            if (phone.startsWith('0')) {
+                phone = phone.substring(1); // Remove the first character (leading zero)
+            }
+            let phoneRegex = /^[0-9]{10}$/;  // Regex for exactly 10 digits
+            if (phone && !phoneRegex.test(phone)) {
+                valid = false;
+                $('#phone').addClass('is-invalid');
+                $('#phone').after('<div class="invalid-feedback">Phone number must be exactly 10 digits.</div>');
+            } else {
+                // $('#phone').removeClass('is-invalid');
+            }
+
+            // If validation fails, prevent form submission
+            if (!valid) {
+                return; // Stop execution and show errors
+            }
+            // Disable the "Place Order" button and change the text to "Loading..."
+            $('#place_order').prop('disabled', true).text('Loading...');
             // Check if Razorpay is selected as the payment method
             if (paymentMethod === 'Razorpay') {
                 $.ajax({
@@ -346,6 +398,7 @@
                                         console.error(
                                             'Payment verification failed:',
                                             error);
+                                            $('#place_order').prop('disabled', false).text('Place Order');
                                     }
                                 });
                             },
@@ -370,10 +423,13 @@
                     },
                     error: function(xhr, status, error) {
                         console.error('Order creation failed:', error);
+                        $('#place_order').prop('disabled', false).text('Place Order');
                     }
                 });
             } else {
-                // If the payment method is Cash on Delivery or other, submit the form directly
+                // If the pay
+                $('#place_order').prop('disabled', true).text('Loading...');
+                //payment method is Cash on Delivery or other, submit the form directly
                 $('#total_amount').val(total_amt);  //set amount again for security reason
                 setTimeout(() => {
                     $('#orderForm').submit();

@@ -53,12 +53,33 @@ class HomeController extends Controller
         Log::info('endDate');
         Log::info($endDate);
         // Fetch orders between the given date range
-        $orders = Order::where('created_at', '>=', $startDate) // Start date filter
+        $query = Order::query();
+        $orders = $query->where('created_at', '>=', $startDate) // Start date filter
         ->where('created_at', '<=', $endDate)->get();
 
         // Calculate total orders and amounts
         $totalOrders = $orders->count();
         $totalAmount = $orders->sum('total_amount'); // Assuming there is an 'amount' column
+        $totalAmtCODOrders = $orders->where('payment_method', 'Cash on Delivery')->sum('total_amount');
+        $totalAmtRazorpayOrders = $orders->where('payment_method', 'Razorpay')->sum('total_amount');
+
+        // total failed orders
+
+        $totalFailedCODOrders = $orders->where('payment_method', 'Cash on Delivery')->whereIn('shipment_id', [NULL, 0])->count();
+        $totalFailedRazorpayOrders = $query
+        ->where('created_at', '>=', $startDate) // Start date filter
+        ->where('created_at', '<=', $endDate)   // End date filter
+        ->where('payment_method', 'Razorpay')   // Adding payment method filter
+        ->where(function($query) {
+            $query->whereIn('shipment_id', [NULL, 0])
+                  ->orWhereNull('razorpay_order_id')
+                  ->orWhereNull('transaction_id');
+        });
+        // echo $totalFailedRazorpayOrders->toSql();
+        $totalFailedRazorpayOrders =  $totalFailedRazorpayOrders->count();
+        $totalFailedOrders = $totalFailedCODOrders + $totalFailedRazorpayOrders;
+
+
         $totalCODOrders = $orders->where('payment_method', 'Cash on Delivery')->count();
         $totalRazorpayOrders = $orders->where('payment_method', 'Razorpay')->count();
 
@@ -73,6 +94,9 @@ class HomeController extends Controller
                 'total_amount' => $totalAmount,
                 'total_cod_orders' => $totalCODOrders,
                 'total_razorpay_orders' => $totalRazorpayOrders,
+                'total_amt_cod_orders' => $totalAmtCODOrders,
+                'total_amt_razorpay_orders' => $totalAmtRazorpayOrders,
+                'total_failed_orders' => $totalFailedOrders,
             ],
             'products' => [
                 'in_stock' => $inStockProductsCount,

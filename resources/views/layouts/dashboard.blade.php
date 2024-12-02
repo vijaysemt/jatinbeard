@@ -71,6 +71,7 @@
                             <div class="card-body">
                                 <h4 class="card-title">Total Orders</h4>
                                 <p class="card-text display-4" id="totalOrders">0</p>
+                                <p class="card-text fs-6" id="totalAmount">₹0</p>
                             </div>
                         </div>
                     </div>
@@ -80,6 +81,7 @@
                             <div class="card-body">
                                 <h4 class="card-title">Cash on delivery Orders</h4>
                                 <p class="card-text display-4" id="totalCOD">0</p>
+                                <p class="card-text fs-6" id="totalAmtCODOrders">₹0</p>
                             </div>
                         </div>
                     </div>
@@ -89,6 +91,7 @@
                             <div class="card-body">
                                 <h4 class="card-title">Razorpay Orders</h4>
                                 <p class="card-text display-4" id="totalRazorpay">0</p>
+                                <p class="card-text fs-6" id="totalAmtRazorpayOrders">₹0</p>
                             </div>
                         </div>
                     </div>
@@ -96,8 +99,8 @@
                     <div class="col-md-3">
                         <div class="card text-center">
                             <div class="card-body">
-                                <h4 class="card-title">Total Amount</h4>
-                                <p class="card-text display-4" id="totalAmount">₹0</p>
+                                <h4 class="card-title">Total Failed Orders</h4>
+                                <p class="card-text display-4" id="totalFailedOrders">0</p>
                             </div>
                         </div>
                     </div>
@@ -192,8 +195,14 @@
                         // Update the dashboard with the fetched data
                         $('#totalOrders').text(data.orders.total_orders);
                         $('#totalAmount').text('₹'+data.orders.total_amount);
+
                         $('#totalCOD').text(data.orders.total_cod_orders);
                         $('#totalRazorpay').text(data.orders.total_razorpay_orders);
+                        $('#totalFailedOrders').text(data.orders.total_failed_orders);
+
+                        $('#totalAmtCODOrders').text('₹'+data.orders.total_amt_cod_orders);
+                        $('#totalAmtRazorpayOrders').text('₹'+data.orders.total_amt_razorpay_orders);
+
                         $('#inStock').text(data.products.in_stock);
                         $('#outOfStock').text(data.products.out_of_stock);
                     },
