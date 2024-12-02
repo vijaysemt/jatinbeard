@@ -27,24 +27,26 @@
                     <div class=" ps-md-5 pt-md-0 pt-5">
                         <p class="text-light mb-3 fw-normal text-uppercase">Quick Link's</p>
                         <ul>
-                            <li><a href="{{ url('/')}}">Home</a></li>
-                            <li><a href="{{ url('about-us')}}">About Us</a></li>
-                            <li><a href="{{ url('shop')}}">Shop</a></li>
-                            <li><a href="{{ url('contact-us')}}">Contact us</a></li>
+                            <li><a href="{{ url('/') }}">Home</a></li>
+                            <li><a href="{{ url('about-us') }}">About Us</a></li>
+                            <li><a href="{{ url('shop') }}">Shop</a></li>
+                            <li><a href="{{ url('contact-us') }}">Contact us</a></li>
                         </ul>
                     </div>
                 </div>
                 <div class="col-md-5">
                     <div class=" ps-md-5 pt-md-0 pt-4">
                         <p class="text-light mb-3 fw-normal text-uppercase">Abour Us</p>
-                        <p>Jatin Beard , The People's Brand, is here to offer the best solutions for all your SKIN & HAIR problems. A prominent and homegrown Indian brand, Jatin Beard has brought in sophisticated amenities for our clients in the skin and hair department.</p>
+                        <p>Jatin Beard , The People's Brand, is here to offer the best solutions for all your SKIN &
+                            HAIR problems. A prominent and homegrown Indian brand, Jatin Beard has brought in
+                            sophisticated amenities for our clients in the skin and hair department.</p>
                     </div>
                 </div>
                 <div class="col-md-2">
-                    <a href="{{ url('/')}}">
-                    <img class="logo-main mb-md-4 mt-md-0 mt-4" src="{{ url('frontend/img/jatin-beard-oil.png') }}"
-                        alt="Logo" />
-                        </a>
+                    <a href="{{ url('/') }}">
+                        <img class="logo-main mb-md-4 mt-md-0 mt-4" src="{{ url('frontend/img/jatin-beard-oil.png') }}"
+                            alt="Logo" />
+                    </a>
                 </div>
             </div>
         </div>
@@ -59,9 +61,9 @@
                         class="" style="color: #999" href="https://digitalmagnetix.in/"><u>
                             DigitalMagnetix</u></a><br>
 
-                            <span class="text-warning">
-                                Disclaimer: The Image is for representation purposes only. The packaging you receive might ARA
-                            </span>
+                    <span class="text-warning">
+                        Disclaimer: The Image is for representation purposes only. The packaging you receive might ARA
+                    </span>
                 </p>
 
             </div>
@@ -149,7 +151,7 @@
                 <h4 class="sidebar-cart-title">Shopping Cart</h4>
                     <div class="product-cart">
                         @if ($cartItems)
-                            @foreach($cartItems as $item)
+                            @foreach ($cartItems as $item)
                                 <div class="product-cart-item">
                                     <div class="product-img">
                                         <a href="shop.html"><img src="frontend/img/shop/cart/1.webp" alt=""></a>
@@ -206,37 +208,45 @@
 </div>
 <script>
     function showModal(event, itemId) {
-       
-        event.preventDefault(); 
+
+        event.preventDefault();
         let currentUrl = window.location.href;
         //event.stopPropagation();
-    // Prevent the default action (navigating to the cart page) // AJAX request to add product to cart 
-    $.ajax({ url: "{{ url('add-to-cart') }}/" + itemId,
-    method: 'GET',
-    // Assuming you're using a GET request to add items to the cart 
-    success: function(response) { 
-        
-        if (currentUrl.includes('/cart')){
-        window.location.reload();
-        }
-        let cartCount = parseInt(document.querySelector('.cart-count').innerText);
-        cartCount++; 
-        console.log(cartCount);
-       
-        document.querySelector('.cart-count').innerText = cartCount; 
-        if (cartCount > 0) {
-            document.querySelector('.cart-count').style.removeProperty('background-color');
-            //document.querySelector('.cart-count').style.backgroundColor = '#00642c !important'; // Set background color
-        }
-        var modal = new bootstrap.Modal(document.getElementById('buyNowModal'));
-        modal.show(); 
-        setTimeout(() => {
-            modal.hide();
-        }, 3000);
-        
-    }
-         }); 
-        
+        // Prevent the default action (navigating to the cart page) // AJAX request to add product to cart 
+        $.ajax({
+            url: "{{ url('add-to-cart') }}/" + itemId,
+            method: 'GET',
+            // Assuming you're using a GET request to add items to the cart 
+            success: function(response) {
+
+                if (currentUrl.includes('/cart')) {
+                    window.location.reload();
+                }
+                // Get the cart count element
+                let cartCountElement = document.querySelector('.cart-count');
+
+                // Get the current count (parse it as an integer)
+                let cartCount = parseInt(cartCountElement.innerText);
+
+                // Increment the cart count
+                cartCount++;
+
+                // Update the cart count display
+                cartCountElement.innerText = cartCount;
+                if (cartCount > 0) {
+                    cartCountElement.removeAttribute('hidden');
+                    cartCountElement.style.removeProperty('background-color');
+                }
+               
+                var modal = new bootstrap.Modal(document.getElementById('buyNowModal'));
+                modal.show();
+                setTimeout(() => {
+                    modal.hide();
+                }, 3000);
+
+            }
+        });
+
     }
 </script>
 <script></script>
