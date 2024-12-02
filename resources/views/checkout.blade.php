@@ -276,8 +276,11 @@
     $(document).ready(function() {
         let total_amt = "{{ $total + $totalDeliveryCharge }}";
         console.log('myVariable', total_amt);
+        redirect(); // check if amount not valid
+        
 
         $('#place_order').on('click', function(e) {
+            redirect(); // check if amount not valid
             e.preventDefault();
             let paymentMethod = $('input[name="payment_method"]:checked').val();
 
@@ -473,6 +476,12 @@
                 $('#state').val('');
             }
         });
+
+        function redirect(params) {
+            if(!total_amt || total_amt == '0') {
+            window.location.href = 'cart';
+        }
+        }
     });
 </script>
 
