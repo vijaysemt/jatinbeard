@@ -37,8 +37,8 @@ class HomeController extends Controller
     public function fetchData(Request $request)
     {
 
-        $startDate = $request->input('start_date'). ' 00:00:00'; // Start of the day
-        $endDate = $request->input('end_date').' 23:59:59';    // End of the day;
+        $startDate = $request->input('start_date'); // Start of the day
+        $endDate = $request->input('end_date');    // End of the day;
         if (!$startDate && !$endDate) {
              // Get the first day of the current month
             $startDate = now()->startOfMonth();
@@ -48,6 +48,8 @@ class HomeController extends Controller
             $endDate = Carbon::parse($endDate)->endOfDay();  // Ensure end date is at the end of the day (23:59:59)
             
         } 
+        $startDate = $startDate. ' 00:00:00'; // Start of the day
+        $endDate = $endDate.' 23:59:59'; 
         Log::info('start date');
         Log::info($startDate);
         Log::info('endDate');
@@ -74,9 +76,8 @@ class HomeController extends Controller
             $query->whereIn('shipment_id', [NULL, 0])
                   ->orWhereNull('razorpay_order_id')
                   ->orWhereNull('transaction_id');
-        });
-        // echo $totalFailedRazorpayOrders->toSql();
-        $totalFailedRazorpayOrders =  $totalFailedRazorpayOrders->count();
+        })->count();
+        
         $totalFailedOrders = $totalFailedCODOrders + $totalFailedRazorpayOrders;
 
 
@@ -86,10 +87,12 @@ class HomeController extends Controller
         // Fetch stock data for products
         $inStockProductsCount = Product::where('stock', '>', 0)->count();
         $outOfStockProductsCount = Product::where('stock', 0)->count();
+        $outOfStockProducts = Product::where('stock', 0)->get();
 
         // Return the data as a JSON response
         return response()->json([
             'orders' => [
+                'orders' => $orders,
                 'total_orders' => $totalOrders,
                 'total_amount' => $totalAmount,
                 'total_cod_orders' => $totalCODOrders,
@@ -99,6 +102,7 @@ class HomeController extends Controller
                 'total_failed_orders' => $totalFailedOrders,
             ],
             'products' => [
+                'outOfStockProducts' => $outOfStockProducts,
                 'in_stock' => $inStockProductsCount,
                 'out_of_stock' => $outOfStockProductsCount,
             ]
