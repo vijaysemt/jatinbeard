@@ -356,6 +356,8 @@ class CartController extends Controller
             Log::info($shiprocketResponse);
             if ($shiprocketResponse['status_code'] == 1) {
                 $this->finalizeOrder($order, $shiprocketResponse['shipment_id'], $validatedData);
+                Log::info('env_smtp_username');
+                Log::info(config('mail.mailers.smtp.username'));
                 Mail::to($validatedData['email'])->send(new OrderMail($order));
                 return redirect()->route('payment.success', ['orderId' => $order->id])->with('message', 'Your order was successful!');
                 // return redirect()->back()->with('success', 'Order placed successfully with Cash on Delivery.');
