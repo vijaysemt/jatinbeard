@@ -28,7 +28,7 @@
         }
 
         .small-text {
-            font-size: 0.8rem;
+            font-size: 1.1rem;
         }
 
         .clickable {
@@ -141,7 +141,7 @@
                                 </div>
                                  <!-- Icon -->
                                  <div class="text-end">
-                                    <i class="fa fa-shipping-fast text-success fs-3"></i>
+                                    <i class="fa fa-shipping-fast text-success fs-3 fa-2x"></i>
                                 </div>
                             </div>
                             <div class="card-footer bg-success clickable text-white text-decoration-none" onclick="updateOrdersTable(1)">
@@ -163,7 +163,7 @@
                                 </div>
                                  <!-- Icon -->
                                  <div class="text-end">
-                                    <i class="fa fa-money-bill-alt text-warning fs-3"></i>
+                                    <i class="fa fa-money-bill-alt text-warning fs-3 fa-2x"></i>
                                 </div>
                             </div>
                             <div class="card-footer bg-warning clickable text-white text-decoration-none" onclick="updateOrdersTable(2)">
@@ -186,7 +186,7 @@
                                 </div>
                                  <!-- Icon -->
                                  <div class="text-end">
-                                    <i class="fa fa-money-check text-info fs-3"></i>
+                                    <i class="fa fa-money-check text-info fs-3 fa-2x"></i>
                                 </div>
                             </div>
                             <div class="card-footer bg-info clickable text-white text-decoration-none" onclick="updateOrdersTable(3)">
@@ -208,7 +208,7 @@
                                 </div>
                                  <!-- Icon -->
                                  <div class="text-end">
-                                    <i class="fa fa-exclamation-triangle  text-danger fs-3"></i>
+                                    <i class="fa fa-exclamation-triangle  text-danger fs-3 fa-2x"></i>
                                 </div>
                             </div>
                             <div class="card-footer bg-danger clickable text-white text-decoration-none" onclick="updateOrdersTable(4)">
@@ -232,7 +232,7 @@
                                 </div>
                                  <!-- Icon -->
                                  <div class="text-end">
-                                    <i class="fa fa-store text-success fs-3"></i>
+                                    <i class="fa fa-store text-success fs-3 fa-2x"></i>
                                 </div>
                             </div>
                             <div class="card-footer bg-success clickable text-white text-decoration-none" onclick="updateStockProducts(1)">
@@ -258,7 +258,7 @@
                                 </div>
                                  <!-- Icon -->
                                  <div class="text-end">
-                                    <i class="fa fa-box text-danger fs-3"></i>
+                                    <i class="fa fa-box text-danger fs-3 fa-2x"></i>
                                 </div>
                             </div>
                             <div class="card-footer bg-danger clickable text-white text-decoration-none" onclick="updateStockProducts(2)">
