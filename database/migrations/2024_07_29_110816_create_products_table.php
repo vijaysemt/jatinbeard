@@ -19,6 +19,7 @@ class CreateProductsTable extends Migration
             $table->string('oprice',);
             $table->integer('stock')->default(0);
             $table->tinyInteger('status')->default(0);
+            $table->float('rating')->default(5);
             $table->string('pcover');
             $table->string('pimage');
             $table->longText('metatitle');

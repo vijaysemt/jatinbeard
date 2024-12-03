@@ -169,6 +169,12 @@
                                     <input type="text" class="form-control" name="sku">
                                 </div>
                             </div>
+                            <div class="col-lg-6 col-12">
+                                <div class="form-group">
+                                    <label for="">Rating (max. 5)</label>
+                                    <input  min="1" max="5" type="number" class="form-control" name="rating">
+                                </div>
+                            </div>
                             <div class="col-lg-6 col-12"></div>
                             <div class="col-lg-6 col-12">
                                 <div class="form-group">

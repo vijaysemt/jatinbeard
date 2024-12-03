@@ -58,6 +58,7 @@ class ProductController extends Controller
         $addproductinfo->length = $request->input('length');
         $addproductinfo->breadth = $request->input('breadth');
         $addproductinfo->sku = $request->input('sku');
+        $addproductinfo->rating = $request->input('rating');
         $addproductinfo->hsn = $request->input('hsn');
         $addproductinfo->tax = $request->input('tax');
         $addproductinfo->height = $request->input('height');
@@ -116,6 +117,7 @@ class ProductController extends Controller
         $updateproductinfo->length = $request->input('length');
         $updateproductinfo->breadth = $request->input('breadth');
         $updateproductinfo->sku = $request->input('sku');
+        $updateproductinfo->rating = $request->input('rating');
         $updateproductinfo->tax = $request->input('tax');
         $updateproductinfo->hsn = $request->input('hsn');
         $updateproductinfo->height = $request->input('height');

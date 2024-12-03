@@ -14,7 +14,7 @@ class TopbarController extends Controller
     public function addtopbarinfo(Request $request, $id){
         $topbar= Topbar::find($id);
         $topbar->topbar = $request->input('topbar');
-        $topbar->update();
+        $topbar->save();
         return redirect('/topbar');
     }
 }

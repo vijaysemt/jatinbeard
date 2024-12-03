@@ -32,8 +32,11 @@
         }
 
         .clickable {
-        cursor: pointer;
-    }
+            cursor: pointer;
+        }
+
+
+        
         /* .card.bg-primary {
             background-color: #007bff !important;
           
@@ -60,6 +63,7 @@
             color: white !important;
            
         } */
+
     </style>
     <!-- Begin page -->
     <div id="wrapper">
@@ -126,25 +130,26 @@
                 </div> --}}
 
                 <div class="row mt-4">
-                   
+
                     <!-- Card 1: Orders -->
                     <div class="col-md-3">
                         <div class="card">
                             <div class="card-body d-flex align-items-center justify-content-between">
-                                
-                                  <div class="text-start ms-3">
+
+                                <div class="text-start ms-3">
                                     <p class="card-text display-4 mb-0">
                                         <span id="totalOrders" class="fw-bold text-success">0</span>
                                         <small id="totalAmount" class="small-text text-muted">(₹0)</small>
                                     </p>
                                     <h4 class="card-title ">Total Orders</h4>
                                 </div>
-                                 <!-- Icon -->
-                                 <div class="text-end">
+                                <!-- Icon -->
+                                <div class="text-end">
                                     <i class="fa fa-shipping-fast text-success fs-3 fa-2x"></i>
                                 </div>
                             </div>
-                            <div class="card-footer bg-success clickable text-white text-decoration-none" onclick="updateOrdersTable(1)">
+                            <div class="card-footer bg-success clickable text-white text-decoration-none"
+                                onclick="updateOrdersTable(1)">
                                 View
                             </div>
                         </div>
@@ -153,115 +158,120 @@
                     <div class="col-md-3">
                         <div class="card">
                             <div class="card-body d-flex align-items-center justify-content-between">
-                                
-                                  <div class="text-start ms-3">
+
+                                <div class="text-start ms-3">
                                     <p class="card-text display-4 mb-0">
                                         <span id="totalCOD" class="fw-bold text-warning">0</span>
                                         <small id="totalAmtCODOrders" class="small-text text-muted">(₹0)</small>
                                     </p>
                                     <h4 class="card-title ">COD Orders</h4>
                                 </div>
-                                 <!-- Icon -->
-                                 <div class="text-end">
+                                <!-- Icon -->
+                                <div class="text-end">
                                     <i class="fa fa-money-bill-alt text-warning fs-3 fa-2x"></i>
                                 </div>
                             </div>
-                            <div class="card-footer bg-warning clickable text-white text-decoration-none" onclick="updateOrdersTable(2)">
+                            <div class="card-footer bg-warning clickable text-white text-decoration-none"
+                                onclick="updateOrdersTable(2)">
                                 View
                             </div>
                         </div>
-                        
+
                     </div>
                     <!-- Card 3: Revenue -->
                     <div class="col-md-3">
                         <div class="card">
                             <div class="card-body d-flex align-items-center justify-content-between">
-                                
-                                  <div class="text-start ms-3">
+
+                                <div class="text-start ms-3">
                                     <p class="card-text display-4 mb-0">
                                         <span id="totalRazorpay" class="fw-bold text-info">0</span>
                                         <small id="totalAmtRazorpayOrders" class="small-text text-muted">(₹0)</small>
                                     </p>
                                     <h4 class="card-title ">Razorpay Orders</h4>
                                 </div>
-                                 <!-- Icon -->
-                                 <div class="text-end">
+                                <!-- Icon -->
+                                <div class="text-end">
                                     <i class="fa fa-money-check text-info fs-3 fa-2x"></i>
                                 </div>
                             </div>
-                            <div class="card-footer bg-info clickable text-white text-decoration-none" onclick="updateOrdersTable(3)">
+                            <div class="card-footer bg-info clickable text-white text-decoration-none"
+                                onclick="updateOrdersTable(3)">
                                 View
                             </div>
                         </div>
                     </div>
                     <!-- Card 4: Products -->
                     <div class="col-md-3">
-                         <div class="card">
+                        <div class="card">
                             <div class="card-body d-flex align-items-center justify-content-between">
-                                
-                                  <div class="text-start ms-3">
+
+                                <div class="text-start ms-3">
                                     <p class="card-text display-4 mb-0">
                                         <span id="totalFailedOrders" class="fw-bold text-danger">0</span>
-                                       
+
                                     </p>
                                     <h4 class="card-title ">Total Failed Orders</h4>
                                 </div>
-                                 <!-- Icon -->
-                                 <div class="text-end">
+                                <!-- Icon -->
+                                <div class="text-end">
                                     <i class="fa fa-exclamation-triangle  text-danger fs-3 fa-2x"></i>
                                 </div>
                             </div>
-                            <div class="card-footer bg-danger clickable text-white text-decoration-none" onclick="updateOrdersTable(4)">
+                            <div class="card-footer bg-danger clickable text-white text-decoration-none"
+                                onclick="updateOrdersTable(4)">
                                 View
                             </div>
                         </div>
                     </div>
                     <hr class="my-4" />
                     <div class="col-md-3">
-                       
 
-                         <div class="card">
+
+                        <div class="card">
                             <div class="card-body d-flex align-items-center justify-content-between">
-                                
-                                  <div class="text-start ms-3">
+
+                                <div class="text-start ms-3">
                                     <p class="card-text display-4 mb-0">
                                         <span id="inStock" class="fw-bold text-success">0</span>
-                                       
+
                                     </p>
                                     <h4 class="card-title ">Stock Items</h4>
                                 </div>
-                                 <!-- Icon -->
-                                 <div class="text-end">
+                                <!-- Icon -->
+                                <div class="text-end">
                                     <i class="fa fa-store text-success fs-3 fa-2x"></i>
                                 </div>
                             </div>
-                            <div class="card-footer bg-success clickable text-white text-decoration-none" onclick="updateStockProducts(1)">
+                            <div class="card-footer bg-success clickable text-white text-decoration-none"
+                                onclick="updateStockProducts(1)">
                                 View
                             </div>
                         </div>
                     </div>
 
                     <div class="col-md-3">
-                       
 
 
 
-                         <div class="card">
+
+                        <div class="card">
                             <div class="card-body d-flex align-items-center justify-content-between">
-                                
-                                  <div class="text-start ms-3">
+
+                                <div class="text-start ms-3">
                                     <p class="card-text display-4 mb-0">
                                         <span id="outOfStock" class="fw-bold text-danger">0</span>
-                                       
+
                                     </p>
                                     <h4 class="card-title ">Out of stock items</h4>
                                 </div>
-                                 <!-- Icon -->
-                                 <div class="text-end">
+                                <!-- Icon -->
+                                <div class="text-end">
                                     <i class="fa fa-box text-danger fs-3 fa-2x"></i>
                                 </div>
                             </div>
-                            <div class="card-footer bg-danger clickable text-white text-decoration-none" onclick="updateStockProducts(2)">
+                            <div class="card-footer bg-danger clickable text-white text-decoration-none"
+                                onclick="updateStockProducts(2)">
                                 View
                             </div>
                         </div>
@@ -288,34 +298,39 @@
                                 </tbody>
                             </table>
                             <table class="table table-hover mails m-0 table table-actions-bar table-centered"
-                            id="stockTable">
-                            <thead>
-                                <tr>
-                                    <th>Sr.no</th>
-                                    <th>Image</th>
-                                    <th>Cover</th>
-                                    <th>Name</th>
-                                    <th>Order</th>
-                                    <th>Weight</th>
-                                    <th>Length</th>
-                                    <th>Breadth</th>
-                                    <th>Height</th>
-                                    <th>Status</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <!-- Data will be populated here -->
-                            </tbody>
-                        </table>
+                                id="stockTable">
+                                <thead>
+                                    <tr>
+                                        <th>Sr.no</th>
+                                        <th>Image</th>
+                                        <th>Cover</th>
+                                        <th>Name</th>
+                                        <th>Order</th>
+                                        <th>Weight</th>
+                                        <th>Length</th>
+                                        <th>Breadth</th>
+                                        <th>Height</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Data will be populated here -->
+                                </tbody>
 
+
+                            </table>
+
+                        </div>
+                        <div id="pagination-controls">
+                            <!-- Pagination buttons will be dynamically added here -->
                         </div>
                     </div>
                 </div>
                 <!-- Horizontal Line -->
                 <hr>
 
-              
+
 
 
                 <!-- Footer Start -->
@@ -342,8 +357,10 @@
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script>
         let all_dashboard_data;
+        let currentPage = 1; // Initially, we start at page 1
+        let ordersPerPage = 5; // Number of orders to display per page
         $(document).ready(function() {
-            
+
             fetchDashboardData(); // Make an AJAX request to fetch data
 
             flatpickr("#rangeCalendar", {
@@ -398,8 +415,9 @@
                         $('#totalRazorpay').text(all_orders_data.total_razorpay_orders);
                         $('#totalFailedOrders').text(all_orders_data.total_failed_orders);
 
-                        $('#totalAmtCODOrders').text('(₹' + all_orders_data.total_amt_cod_orders+ ')');
-                        $('#totalAmtRazorpayOrders').text('(₹' + all_orders_data.total_amt_razorpay_orders+ ')');
+                        $('#totalAmtCODOrders').text('(₹' + all_orders_data.total_amt_cod_orders + ')');
+                        $('#totalAmtRazorpayOrders').text('(₹' + all_orders_data
+                            .total_amt_razorpay_orders + ')');
 
                         $('#inStock').text(all_products_data.in_stock_count);
                         $('#outOfStock').text(all_products_data.out_of_stock_count);
@@ -412,113 +430,175 @@
                 });
             }
 
-           
+
 
         });
-         // Function to update the orders table with new data
-         function updateOrdersTable(type) {
-                // 1 for all orders, 2 for cod orders, 3 for razorpay orders, 4 for failed orders
-                let orders_data = [];
-                if(type ==1) {
-                    $('#list_name').html('Orders List');
-                    orders_data = all_orders_data.orders;
-                }else if(type == 2) {
-                    $('#list_name').html('Cash on delivery Orders List');
-                    orders_data = all_orders_data.cod_orders;
-                }else if(type == 3) {
-                    $('#list_name').html('Razorpay Orders List');
-                    orders_data = all_orders_data.razorpay_orders;
-                }else if(type == 4) {
-                    $('#list_name').html('Failed Orders List');
-                    orders_data = all_orders_data.failed_orders;
-                }
-                console.log('type',type);
-                console.log('orders_data',orders_data);
-                $('#item_list').removeAttr('hidden');
-                $('#ordersTable').removeAttr('hidden');
-                $('#stockTable').attr('hidden', true);
-                var tbody = $('#ordersTable tbody');
-                tbody.empty(); // Clear any existing rows
+        // Function to update the orders table with new data
+        function updateOrdersTable(type, pageNumber = null) {
+            console.log('type', type);
+            let orders_data = [];
+            let orders = []; // Example data for demonstration purposes
+            let totalOrders = 0; // Total orders, this will be fetched from your backend or a variable
 
-                // Check if there are no orders
-                if (orders_data.length === 0) {
-                    tbody.append('<tr><td colspan="6" class="text-center">No orders found</td></tr>');
-                    return; // Exit the function early
-                }
-
-                // Loop through the orders and create table rows
-                orders_data.forEach(function(order, index) {
-                    var row = $('<tr></tr>');
-
-                    // Format the date (created_at) as YYYY-MM-DD
-                    var formattedDate = new Date(order.created_at).toISOString().split('T')[0];
-                    // row.append('<td>' + order.id + '</td>');
-                    row.append('<td>' + (index+1) + '</td>');
-                    row.append('<td>' + order.first_name + ' ' + order.last_name + '</td>');
-                    row.append('<td>₹' + parseFloat(order.total_amount).toFixed(2) + '</td>');
-                    row.append('<td>' + order.payment_method + '</td>');
-                    row.append('<td>' + formattedDate + '</td>');
-                    row.append('<td><a href="' + '{{ route('orders.view', '') }}' + '/' + order.id +
-                        '" class="btn btn-primary btn-sm">View</a></td>');
-
-                    // Append the row to the table body
-                    tbody.append(row);
-                });
+            // Based on type, select the appropriate order data
+            if (type === 1) {
+                $('#list_name').html('Orders List');
+                orders_data = all_orders_data.orders;
+            } else if (type === 2) {
+                $('#list_name').html('Cash on Delivery Orders List');
+                orders_data = all_orders_data.cod_orders;
+            } else if (type === 3) {
+                $('#list_name').html('Razorpay Orders List');
+                orders_data = all_orders_data.razorpay_orders;
+            } else if (type === 4) {
+                $('#list_name').html('Failed Orders List');
+                orders_data = all_orders_data.failed_orders;
             }
 
-            function updateStockProducts(type) {
-                let products_data = [];
-                if(type ==1) {
-                    $('#list_name').html('Stock Products List');
-                    products_data = all_products_data.in_stock;
-                }else if(type == 2) {
-                    $('#list_name').html('Out of Stock Products List');
-                    products_data = all_products_data.out_of_stock;
-                }
-                $('#item_list').removeAttr('hidden');
-                $('#stockTable').removeAttr('hidden');
-                $('#ordersTable').attr('hidden', true);
-                var tbody = $('#stockTable tbody');
-                tbody.empty(); // Clear any existing rows
-
-                // Check if there are no out-of-stock products
-                if (products_data.length === 0) {
-                    tbody.append(
-                        '<tr><td colspan="11" class="text-center">No out-of-stock products found</td></tr>');
-                    return; // Exit the function early
-                }
-
-                // Loop through the out-of-stock products and create table rows
-                products_data.forEach(function(product, index) {
-                    var row = $('<tr></tr>');
-
-                    // Append the data to the row
-                    row.append('<td>' + (index + 1) + '</td>');
-                    row.append('<td><img src="' + '{{ url('admin/assets/uploads/product/home/') }}' + '/' +
-                        product.pimage + '" alt="" width="50px"></td>');
-                    row.append('<td><img src="' + '{{ url('admin/assets/uploads/product/cover/') }}' + '/' +
-                        product.pcover + '" alt="" width="80px"></td>');
-                    row.append('<td>' + product.name + '</td>');
-                    row.append('<td>' + product.order + '</td>');
-                    row.append('<td>' + product.weight + '</td>');
-                    row.append('<td>' + product.length + '</td>');
-                    row.append('<td>' + product.breadth + '</td>');
-                    row.append('<td>' + product.height + '</td>');
-                    row.append('<td>' + (product.status == 0 ? 'Visible' : 'Hidden') + '</td>');
-                    var actionColumn = '<td>' +
-                        '<a href="' + '{{ url('updateproduct/') }}' + '/' + product.id + '/' + product
-                        .name + '" class="btn btn-success btn-sm">Update</a>' +
-                        ' <a href="' + '{{ url('deleteproduct/') }}' + '/' + product.id + '/' + product
-                        .name +
-                        '" class="btn btn-danger btn-sm" onclick="return confirm(\'Are you sure you want to delete this product?\')">' +
-                        '<i class="fas fa-trash"></i> Delete' +
-                        '</a>' +
-                        '</td>';
-
-                    row.append(actionColumn);
-
-                    // Append the row to the table body
-                    tbody.append(row);
-                });
+            totalOrders = orders_data.length; // Total number of orders available
+            currentPage = pageNumber ? pageNumber : 1;
+            // Handle pagination based on currentPage
+            let startIndex = (currentPage - 1) * ordersPerPage;
+            let endIndex = startIndex + ordersPerPage;
+            let paginatedOrders = orders_data.slice(startIndex, endIndex); // Paginate the orders data
+            $('#item_list').removeAttr('hidden');
+            $('#ordersTable').removeAttr('hidden');
+            $('#stockTable').attr('hidden', true);
+            var tbody = $('#ordersTable tbody');
+            tbody.empty(); // Clear any existing rows
+            console.log('paginatedOrders', paginatedOrders);
+            console.log('orders_data', orders_data);
+            // Check if there are no orders
+            if (paginatedOrders.length === 0) {
+                tbody.append('<tr><td colspan="6" class="text-center">No orders found</td></tr>');
+                return;
             }
+
+            // Loop through the orders and create table rows
+            paginatedOrders.forEach(function(order, index) {
+                var row = $('<tr></tr>');
+
+                // Format the date (created_at) as YYYY-MM-DD
+                var formattedDate = new Date(order.created_at).toISOString().split('T')[0];
+
+                row.append('<td>' + (startIndex + index + 1) + '</td>');
+                row.append('<td>' + order.first_name + ' ' + order.last_name + '</td>');
+                row.append('<td>₹' + parseFloat(order.total_amount).toFixed(2) + '</td>');
+                row.append('<td>' + order.payment_method + '</td>');
+                row.append('<td>' + formattedDate + '</td>');
+                row.append('<td><a href="' + '{{ route('orders.view', '') }}' + '/' + order.id +
+                    '" class="btn btn-primary btn-sm">View</a></td>');
+
+                tbody.append(row);
+            });
+
+            // Update the pagination controls
+            updatePaginationControls(totalOrders, type);
+        }
+
+        // Function to update pagination controls
+        function updatePaginationControls(totalOrders, type) {
+            let totalPages = Math.ceil(totalOrders / ordersPerPage); // Total pages required
+            let paginationControls = $('#pagination-controls');
+            paginationControls.empty(); // Clear existing pagination controls
+
+            if(totalPages<=1) {
+                return
+            }
+            // Add Previous button
+            if (currentPage > 1) {
+                paginationControls.append('<button class="btn btn-secondary m-1" onclick="changePage(' + type + ', ' + (
+                    currentPage - 1) + ',1)">Previous</button>');
+            }
+
+            // Add page numbers
+            for (let i = 1; i <= totalPages; i++) {
+                if (i === currentPage) {
+                    paginationControls.append('<button class="btn btn-primary" disabled>' + i + '</button>');
+                } else {
+                    paginationControls.append('<button class="btn btn-secondary m-1" onclick="changePage(' + type + ', ' + i +
+                        ',1)">' + i +
+                        '</button>');
+                }
+            }
+
+            // Add Next button
+            if (currentPage < totalPages) {
+                paginationControls.append('<button class="btn btn-secondary m-1" onclick="changePage(' + type + ', ' + (
+                    currentPage + 1) + ', 1)">Next</button>');
+            }
+        }
+
+        // Function to handle page change
+        function changePage(type, pageNumber,list_type=1) {
+            currentPage = pageNumber; // Set current page to the selected page
+            if(list_type == 1) {
+                updateOrdersTable(type,pageNumber); // Re-fetch and update the orders for the new page (1 refers to all orders type)
+            }else {
+                updateStockProducts(type,pageNumber);
+            }
+            
+        }
+       
+
+        function updateStockProducts(type,pageNumber) {
+            let products_data = [];
+            if (type == 1) {
+                $('#list_name').html('Stock Products List');
+                products_data = all_products_data.in_stock;
+            } else if (type == 2) {
+                $('#list_name').html('Out of Stock Products List');
+                products_data = all_products_data.out_of_stock;
+            }
+
+            $('#item_list').removeAttr('hidden');
+            $('#stockTable').removeAttr('hidden');
+            $('#ordersTable').attr('hidden', true);
+            var tbody = $('#stockTable tbody');
+            tbody.empty(); // Clear any existing rows
+
+            // Check if there are no products
+            if (products_data.length === 0) {
+                tbody.append('<tr><td colspan="11" class="text-center">No products found</td></tr>');
+                return; // Exit the function early
+            }
+            currentPage = pageNumber ? pageNumber : 1;
+            // Calculate total products and slice data based on current page
+            let totalProducts = products_data.length;
+            let startIndex = (currentPage - 1) * ordersPerPage;
+            let endIndex = startIndex + ordersPerPage;
+            let paginatedProducts = products_data.slice(startIndex, endIndex); // Get products for the current page
+
+            // Loop through the products and create table rows
+            paginatedProducts.forEach(function(product, index) {
+                var row = $('<tr></tr>');
+
+                // Append the data to the row
+                row.append('<td>' + (startIndex + index + 1) + '</td>');
+                row.append('<td><img src="' + '{{ url('admin/assets/uploads/product/home/') }}' + '/' + product
+                    .pimage + '" alt="" width="50px"></td>');
+                row.append('<td><img src="' + '{{ url('admin/assets/uploads/product/cover/') }}' + '/' + product
+                    .pcover + '" alt="" width="80px"></td>');
+                row.append('<td>' + product.name + '</td>');
+                row.append('<td>' + product.order + '</td>');
+                row.append('<td>' + product.weight + '</td>');
+                row.append('<td>' + product.length + '</td>');
+                row.append('<td>' + product.breadth + '</td>');
+                row.append('<td>' + product.height + '</td>');
+                row.append('<td>' + (product.status == 0 ? 'Visible' : 'Hidden') + '</td>');
+
+                var actionColumn = '<td>' +
+                    '<a href="' + '{{ url('updateproduct/') }}' + '/' + product.id + '/' + product.name +
+                    '" class="btn btn-success btn-sm">Update</a>' +
+                    '</td>';
+
+                row.append(actionColumn);
+
+                // Append the row to the table body
+                tbody.append(row);
+            });
+
+            // Update the pagination controls
+            updatePaginationControls(totalProducts, type);
+        }
     </script>

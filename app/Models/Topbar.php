@@ -9,6 +9,7 @@ class Topbar extends Model
 {
     use HasFactory;
     protected $table ='topbar';
+    public $timestamps = false;
     protected $fillable= [
         'topbar',
     ];
