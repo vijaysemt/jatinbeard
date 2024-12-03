@@ -28,7 +28,7 @@
         }
 
         .small-text {
-            font-size: 1.1rem;
+            font-size: 1.2rem;
         }
 
         .clickable {
@@ -159,7 +159,7 @@
                                         <span id="totalCOD" class="fw-bold text-warning">0</span>
                                         <small id="totalAmtCODOrders" class="small-text text-muted">(₹0)</small>
                                     </p>
-                                    <h4 class="card-title ">Cash on delivery Orders</h4>
+                                    <h4 class="card-title ">COD Orders</h4>
                                 </div>
                                  <!-- Icon -->
                                  <div class="text-end">
