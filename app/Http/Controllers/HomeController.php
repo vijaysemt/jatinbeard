@@ -67,8 +67,9 @@ class HomeController extends Controller
 
         // total failed orders
 
-        $totalFailedCODOrders = $orders->where('payment_method', 'Cash on Delivery')->whereIn('shipment_id', [NULL, 0])->count();
-        $totalFailedRazorpayOrders = $query
+        $failedCODOrders = $orders->where('payment_method', 'Cash on Delivery')->whereIn('shipment_id', [NULL, 0]);
+
+        $failedRazorpayOrders = $query
         ->where('created_at', '>=', $startDate) // Start date filter
         ->where('created_at', '<=', $endDate)   // End date filter
         ->where('payment_method', 'Razorpay')   // Adding payment method filter
@@ -76,23 +77,40 @@ class HomeController extends Controller
             $query->whereIn('shipment_id', [NULL, 0])
                   ->orWhereNull('razorpay_order_id')
                   ->orWhereNull('transaction_id');
-        })->count();
-        
+        });
+
+        // Merge the two collections
+        $failedOrders = $failedCODOrders->merge($failedRazorpayOrders);
+        $totalFailedCODOrders = $failedCODOrders->count();
+        $totalFailedRazorpayOrders = $failedRazorpayOrders->count();
         $totalFailedOrders = $totalFailedCODOrders + $totalFailedRazorpayOrders;
 
 
-        $totalCODOrders = $orders->where('payment_method', 'Cash on Delivery')->count();
-        $totalRazorpayOrders = $orders->where('payment_method', 'Razorpay')->count();
-
+        
+        
+        $CODOrders = $orders->where('payment_method', 'Cash on Delivery');
+        
+        $totalCODOrders = $CODOrders->count();
+      
+        $CODOrders = $CODOrders->merge($CODOrders);
+      
+        $razorpayOrders = $orders->where('payment_method', 'Razorpay');
+        $totalRazorpayOrders = $razorpayOrders->count();
+        $razorpayOrders = $razorpayOrders->merge($razorpayOrders);
         // Fetch stock data for products
-        $inStockProductsCount = Product::where('stock', '>', 0)->count();
-        $outOfStockProductsCount = Product::where('stock', 0)->count();
+        $inStockProducts = Product::where('stock', '>', 0)->get();
+        $inStockProductsCount = $inStockProducts->count();
+
         $outOfStockProducts = Product::where('stock', 0)->get();
+        $outOfStockProductsCount = $outOfStockProducts->count();
 
         // Return the data as a JSON response
         return response()->json([
             'orders' => [
                 'orders' => $orders,
+                'cod_orders' => $CODOrders,
+                'razorpay_orders' => $razorpayOrders,
+                'failed_orders' => $failedOrders,
                 'total_orders' => $totalOrders,
                 'total_amount' => $totalAmount,
                 'total_cod_orders' => $totalCODOrders,
@@ -102,9 +120,10 @@ class HomeController extends Controller
                 'total_failed_orders' => $totalFailedOrders,
             ],
             'products' => [
-                'outOfStockProducts' => $outOfStockProducts,
-                'in_stock' => $inStockProductsCount,
-                'out_of_stock' => $outOfStockProductsCount,
+                'out_of_stock' => $outOfStockProducts,
+                'in_stock' => $inStockProducts,
+                'in_stock_count' => $inStockProductsCount,
+                'out_of_stock_count' => $outOfStockProductsCount,
             ]
         ]);
     }

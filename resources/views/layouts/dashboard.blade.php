@@ -27,32 +27,39 @@
             font-weight: bold;
         }
 
-        .card.bg-primary {
+        .small-text {
+            font-size: 0.8rem;
+        }
+
+        .clickable {
+        cursor: pointer;
+    }
+        /* .card.bg-primary {
             background-color: #007bff !important;
-            /* Set primary color */
+          
         }
 
         .card.text-white {
             color: #ffffff !important;
-            /* Set text color to white */
+           
         }
 
         .card-body h4 {
             font-weight: bold;
-            /* Make the card title bold */
+            
         }
 
         .card.bg-primary {
             background-color: #007bff !important;
-            /* Set primary color */
+           
         }
 
         .card .card-body,
         .card .card-body h4,
         .card .card-body p {
             color: white !important;
-            /* Force white text color */
-        }
+           
+        } */
     </style>
     <!-- Begin page -->
     <div id="wrapper">
@@ -91,68 +98,178 @@
                     </div>
                 </div>
 
+
+                {{-- <div style="display: flex; gap: 20px; justify-content: center; align-items: center;">
+                    <!-- Earnings Card -->
+                    <div
+                        style="background: #f6d4c5; border-radius: 10px; padding: 20px; width: 200px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); text-align: center;">
+                        <h2 style="margin: 0; color: #FF5722;">$30,200</h2>
+                        <p style="margin: 5px 0; font-size: 14px; color: #333;">All Earnings</p>
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+                            <span style="font-size: 12px; color: #888;">% change</span>
+                            <span style="font-size: 16px; color: #FF5722;">↑</span>
+                        </div>
+                    </div>
+
+                    <!-- Page Views Card -->
+                    <div
+                        style="background: #d0f6df; border-radius: 10px; padding: 20px; width: 200px; box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); text-align: center;">
+                        <h2 style="margin: 0; color: #00C853;">290+</h2>
+                        <p style="margin: 5px 0; font-size: 14px; color: #333;">Page Views</p>
+                        <div
+                            style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+                            <span style="font-size: 12px; color: #888;">% change</span>
+                            <span style="font-size: 16px; color: #00C853;">↑</span>
+                        </div>
+                    </div>
+                </div> --}}
+
                 <div class="row mt-4">
+                   
                     <!-- Card 1: Orders -->
                     <div class="col-md-3">
-                        <div class="card text-center bg-success">
-                            <div class="card-body">
-                                <h4 class="card-title">Total Orders</h4>
-                                <p class="card-text display-4" id="totalOrders">0</p>
-                                <p class="card-text fs-6" id="totalAmount">₹0</p>
+                        <div class="card">
+                            <div class="card-body d-flex align-items-center justify-content-between">
+                                
+                                  <div class="text-start ms-3">
+                                    <p class="card-text display-4 mb-0">
+                                        <span id="totalOrders" class="fw-bold text-success">0</span>
+                                        <small id="totalAmount" class="small-text text-muted">(₹0)</small>
+                                    </p>
+                                    <h4 class="card-title ">Total Orders</h4>
+                                </div>
+                                 <!-- Icon -->
+                                 <div class="text-end">
+                                    <i class="fa fa-shipping-fast text-success fs-3"></i>
+                                </div>
+                            </div>
+                            <div class="card-footer bg-success clickable text-white text-decoration-none" onclick="updateOrdersTable(1)">
+                                View
                             </div>
                         </div>
                     </div>
                     <!-- Card 2: Customers -->
                     <div class="col-md-3">
-                        <div class="card text-center bg-warning">
-                            <div class="card-body">
-                                <h4 class="card-title">Cash on delivery Orders</h4>
-                                <p class="card-text display-4" id="totalCOD">0</p>
-                                <p class="card-text fs-6" id="totalAmtCODOrders">₹0</p>
+                        <div class="card">
+                            <div class="card-body d-flex align-items-center justify-content-between">
+                                
+                                  <div class="text-start ms-3">
+                                    <p class="card-text display-4 mb-0">
+                                        <span id="totalCOD" class="fw-bold text-warning">0</span>
+                                        <small id="totalAmtCODOrders" class="small-text text-muted">(₹0)</small>
+                                    </p>
+                                    <h4 class="card-title ">Cash on delivery Orders</h4>
+                                </div>
+                                 <!-- Icon -->
+                                 <div class="text-end">
+                                    <i class="fa fa-money-bill-alt text-warning fs-3"></i>
+                                </div>
+                            </div>
+                            <div class="card-footer bg-warning clickable text-white text-decoration-none" onclick="updateOrdersTable(2)">
+                                View
                             </div>
                         </div>
+                        
                     </div>
                     <!-- Card 3: Revenue -->
                     <div class="col-md-3">
-                        <div class="card text-center bg-info">
-                            <div class="card-body">
-                                <h4 class="card-title">Razorpay Orders</h4>
-                                <p class="card-text display-4" id="totalRazorpay">0</p>
-                                <p class="card-text fs-6" id="totalAmtRazorpayOrders">₹0</p>
+                        <div class="card">
+                            <div class="card-body d-flex align-items-center justify-content-between">
+                                
+                                  <div class="text-start ms-3">
+                                    <p class="card-text display-4 mb-0">
+                                        <span id="totalRazorpay" class="fw-bold text-info">0</span>
+                                        <small id="totalAmtRazorpayOrders" class="small-text text-muted">(₹0)</small>
+                                    </p>
+                                    <h4 class="card-title ">Razorpay Orders</h4>
+                                </div>
+                                 <!-- Icon -->
+                                 <div class="text-end">
+                                    <i class="fa fa-money-check text-info fs-3"></i>
+                                </div>
+                            </div>
+                            <div class="card-footer bg-info clickable text-white text-decoration-none" onclick="updateOrdersTable(3)">
+                                View
                             </div>
                         </div>
                     </div>
                     <!-- Card 4: Products -->
                     <div class="col-md-3">
-                        <div class="card text-center bg-danger">
-                            <div class="card-body">
-                                <h4 class="card-title">Total Failed Orders</h4>
-                                <p class="card-text display-4" id="totalFailedOrders">0</p>
+                         <div class="card">
+                            <div class="card-body d-flex align-items-center justify-content-between">
+                                
+                                  <div class="text-start ms-3">
+                                    <p class="card-text display-4 mb-0">
+                                        <span id="totalFailedOrders" class="fw-bold text-danger">0</span>
+                                       
+                                    </p>
+                                    <h4 class="card-title ">Total Failed Orders</h4>
+                                </div>
+                                 <!-- Icon -->
+                                 <div class="text-end">
+                                    <i class="fa fa-exclamation-triangle  text-danger fs-3"></i>
+                                </div>
+                            </div>
+                            <div class="card-footer bg-danger clickable text-white text-decoration-none" onclick="updateOrdersTable(4)">
+                                View
                             </div>
                         </div>
                     </div>
                     <hr class="my-4" />
                     <div class="col-md-3">
-                        <div class="card text-center bg-success">
-                            <div class="card-body">
-                                <h4 class="card-title">Stock Items</h4>
-                                <p class="card-text display-4" id="inStock">0</p>
+                       
+
+                         <div class="card">
+                            <div class="card-body d-flex align-items-center justify-content-between">
+                                
+                                  <div class="text-start ms-3">
+                                    <p class="card-text display-4 mb-0">
+                                        <span id="inStock" class="fw-bold text-success">0</span>
+                                       
+                                    </p>
+                                    <h4 class="card-title ">Stock Items</h4>
+                                </div>
+                                 <!-- Icon -->
+                                 <div class="text-end">
+                                    <i class="fa fa-store text-success fs-3"></i>
+                                </div>
+                            </div>
+                            <div class="card-footer bg-success clickable text-white text-decoration-none" onclick="updateStockProducts(1)">
+                                View
                             </div>
                         </div>
                     </div>
 
                     <div class="col-md-3">
-                        <div class="card text-center bg-danger">
-                            <div class="card-body">
-                                <h4 class="card-title">Out of stock items</h4>
-                                <p class="card-text display-4" id="outOfStock">0</p>
+                       
+
+
+
+                         <div class="card">
+                            <div class="card-body d-flex align-items-center justify-content-between">
+                                
+                                  <div class="text-start ms-3">
+                                    <p class="card-text display-4 mb-0">
+                                        <span id="outOfStock" class="fw-bold text-danger">0</span>
+                                       
+                                    </p>
+                                    <h4 class="card-title ">Out of stock items</h4>
+                                </div>
+                                 <!-- Icon -->
+                                 <div class="text-end">
+                                    <i class="fa fa-box text-danger fs-3"></i>
+                                </div>
+                            </div>
+                            <div class="card-footer bg-danger clickable text-white text-decoration-none" onclick="updateStockProducts(2)">
+                                View
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row" id="item_list" hidden>
                     <div class="col-lg-12 col-12">
-                        <h3>Order List</h3> <!-- Order List Header -->
+                        <h3 id="list_name">List</h3> <!-- Order List Header -->
                         <div class="table-responsive">
                             <table class="table table-hover mails m-0 table table-actions-bar table-centered"
                                 id="ordersTable">
@@ -170,7 +287,27 @@
 
                                 </tbody>
                             </table>
-
+                            <table class="table table-hover mails m-0 table table-actions-bar table-centered"
+                            id="stockTable">
+                            <thead>
+                                <tr>
+                                    <th>Sr.no</th>
+                                    <th>Image</th>
+                                    <th>Cover</th>
+                                    <th>Name</th>
+                                    <th>Order</th>
+                                    <th>Weight</th>
+                                    <th>Length</th>
+                                    <th>Breadth</th>
+                                    <th>Height</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Data will be populated here -->
+                            </tbody>
+                        </table>
 
                         </div>
                     </div>
@@ -178,34 +315,7 @@
                 <!-- Horizontal Line -->
                 <hr>
 
-                <div class="row">
-                    <div class="col-lg-12 col-12">
-                        <h3>Out of Stock Product List</h3> <!-- Product List Header -->
-                        <div class="table-responsive">
-                            <table class="table table-hover mails m-0 table table-actions-bar table-centered"
-                                id="outOfStockTable">
-                                <thead>
-                                    <tr>
-                                        <th>Sr.no</th>
-                                        <th>Image</th>
-                                        <th>Cover</th>
-                                        <th>Name</th>
-                                        <th>Order</th>
-                                        <th>Weight</th>
-                                        <th>Length</th>
-                                        <th>Breadth</th>
-                                        <th>Height</th>
-                                        <th>Status</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <!-- Data will be populated here -->
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
+              
 
 
                 <!-- Footer Start -->
@@ -231,8 +341,9 @@
 
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script>
+        let all_dashboard_data;
         $(document).ready(function() {
-
+            
             fetchDashboardData(); // Make an AJAX request to fetch data
 
             flatpickr("#rangeCalendar", {
@@ -276,21 +387,24 @@
                         end_date: endDate
                     },
                     success: function(data) {
+                        all_dashboard_data = data;
+                        all_orders_data = data.orders;
+                        all_products_data = data.products;
                         // Update the dashboard with the fetched data
-                        $('#totalOrders').text(data.orders.total_orders);
-                        $('#totalAmount').text('₹' + data.orders.total_amount);
+                        $('#totalOrders').text(all_orders_data.total_orders);
+                        $('#totalAmount').text('(₹' + all_orders_data.total_amount + ')');
 
-                        $('#totalCOD').text(data.orders.total_cod_orders);
-                        $('#totalRazorpay').text(data.orders.total_razorpay_orders);
-                        $('#totalFailedOrders').text(data.orders.total_failed_orders);
+                        $('#totalCOD').text(all_orders_data.total_cod_orders);
+                        $('#totalRazorpay').text(all_orders_data.total_razorpay_orders);
+                        $('#totalFailedOrders').text(all_orders_data.total_failed_orders);
 
-                        $('#totalAmtCODOrders').text('₹' + data.orders.total_amt_cod_orders);
-                        $('#totalAmtRazorpayOrders').text('₹' + data.orders.total_amt_razorpay_orders);
+                        $('#totalAmtCODOrders').text('(₹' + all_orders_data.total_amt_cod_orders+ ')');
+                        $('#totalAmtRazorpayOrders').text('(₹' + all_orders_data.total_amt_razorpay_orders+ ')');
 
-                        $('#inStock').text(data.products.in_stock);
-                        $('#outOfStock').text(data.products.out_of_stock);
-                        updateOrdersTable(data.orders.orders);
-                        updateOutOfStockProducts(data.products.outOfStockProducts)
+                        $('#inStock').text(all_products_data.in_stock_count);
+                        $('#outOfStock').text(all_products_data.out_of_stock_count);
+                        updateOrdersTable(1);
+                        // updateStockProducts(1)
                     },
                     error: function(xhr, status, error) {
                         console.error('Error fetching data:', error);
@@ -298,24 +412,48 @@
                 });
             }
 
-            // Function to update the orders table with new data
-            function updateOrdersTable(orders) {
+           
+
+        });
+         // Function to update the orders table with new data
+         function updateOrdersTable(type) {
+                // 1 for all orders, 2 for cod orders, 3 for razorpay orders, 4 for failed orders
+                let orders_data = [];
+                if(type ==1) {
+                    $('#list_name').html('Orders List');
+                    orders_data = all_orders_data.orders;
+                }else if(type == 2) {
+                    $('#list_name').html('Cash on delivery Orders List');
+                    orders_data = all_orders_data.cod_orders;
+                }else if(type == 3) {
+                    $('#list_name').html('Razorpay Orders List');
+                    orders_data = all_orders_data.razorpay_orders;
+                }else if(type == 4) {
+                    $('#list_name').html('Failed Orders List');
+                    orders_data = all_orders_data.failed_orders;
+                }
+                console.log('type',type);
+                console.log('orders_data',orders_data);
+                $('#item_list').removeAttr('hidden');
+                $('#ordersTable').removeAttr('hidden');
+                $('#stockTable').attr('hidden', true);
                 var tbody = $('#ordersTable tbody');
                 tbody.empty(); // Clear any existing rows
 
                 // Check if there are no orders
-                if (orders.length === 0) {
+                if (orders_data.length === 0) {
                     tbody.append('<tr><td colspan="6" class="text-center">No orders found</td></tr>');
                     return; // Exit the function early
                 }
 
                 // Loop through the orders and create table rows
-                orders.forEach(function(order, index) {
+                orders_data.forEach(function(order, index) {
                     var row = $('<tr></tr>');
 
                     // Format the date (created_at) as YYYY-MM-DD
                     var formattedDate = new Date(order.created_at).toISOString().split('T')[0];
-                    row.append('<td>' + order.id + '</td>');
+                    // row.append('<td>' + order.id + '</td>');
+                    row.append('<td>' + (index+1) + '</td>');
                     row.append('<td>' + order.first_name + ' ' + order.last_name + '</td>');
                     row.append('<td>₹' + parseFloat(order.total_amount).toFixed(2) + '</td>');
                     row.append('<td>' + order.payment_method + '</td>');
@@ -328,19 +466,30 @@
                 });
             }
 
-            function updateOutOfStockProducts(outOfStockProducts) {
-                var tbody = $('#outOfStockTable tbody');
+            function updateStockProducts(type) {
+                let products_data = [];
+                if(type ==1) {
+                    $('#list_name').html('Stock Products List');
+                    products_data = all_products_data.in_stock;
+                }else if(type == 2) {
+                    $('#list_name').html('Out of Stock Products List');
+                    products_data = all_products_data.out_of_stock;
+                }
+                $('#item_list').removeAttr('hidden');
+                $('#stockTable').removeAttr('hidden');
+                $('#ordersTable').attr('hidden', true);
+                var tbody = $('#stockTable tbody');
                 tbody.empty(); // Clear any existing rows
 
                 // Check if there are no out-of-stock products
-                if (outOfStockProducts.length === 0) {
+                if (products_data.length === 0) {
                     tbody.append(
                         '<tr><td colspan="11" class="text-center">No out-of-stock products found</td></tr>');
                     return; // Exit the function early
                 }
 
                 // Loop through the out-of-stock products and create table rows
-                outOfStockProducts.forEach(function(product, index) {
+                products_data.forEach(function(product, index) {
                     var row = $('<tr></tr>');
 
                     // Append the data to the row
@@ -372,6 +521,4 @@
                     tbody.append(row);
                 });
             }
-
-        });
     </script>
