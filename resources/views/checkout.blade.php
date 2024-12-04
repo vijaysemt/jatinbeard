@@ -276,29 +276,12 @@
 @include('footer')
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script>
+    let total_amt = "{{ $total + $totalDeliveryCharge }}";
     $(document).ready(function() {
-        let total_amt = "{{ $total + $totalDeliveryCharge }}";
+        
         console.log('myVariable', total_amt);
         redirect(); // check if amount not valid
-        function updatePaymentAmount() {
-            $('#total_amount').val(total_amt);
-            const paymentMethod = document.querySelector('input[name="payment_method"]:checked').value;
-
-            // Get the element where the total amount is displayed
-            const totalAmountElement =$('#total_amount').val(total_amt);
-
-            if (paymentMethod === 'Cash on Delivery') {
-                totalAmount = total_amt + 50; // Add ₹50 for Cash on Delivery
-            } else {
-                totalAmount = total_amt; // No extra charge for Razorpay
-            }
-
-            // Update the total amount display
-            // totalAmountElement.textContent = '₹' + totalAmount;
-
-            $('#total_amount').val(totalAmount);
-            $('#amt_text').html(totalAmount);
-        }
+       
 
         $('#place_order').on('click', function(e) {
             redirect(); // check if amount not valid
@@ -509,5 +492,25 @@
 
         
     });
+
+    function updatePaymentAmount() {
+            $('#total_amount').val(total_amt);
+            const paymentMethod = document.querySelector('input[name="payment_method"]:checked').value;
+
+            // Get the element where the total amount is displayed
+            const totalAmountElement =$('#total_amount').val(total_amt);
+
+            if (paymentMethod === 'Cash on Delivery') {
+                totalAmount = total_amt + 50; // Add ₹50 for Cash on Delivery
+            } else {
+                totalAmount = total_amt; // No extra charge for Razorpay
+            }
+
+            // Update the total amount display
+            // totalAmountElement.textContent = '₹' + totalAmount;
+
+            $('#total_amount').val(totalAmount);
+            $('#amt_text').html(totalAmount);
+        }
    
 </script>
