@@ -58,12 +58,7 @@ class ShiprocketService
                 ],
                 'json' => $orderData
             ]);
-            Log::info('response:');
-            // Log::info($response);
-            Log::info('orderData:');
-            Log::info($orderData);
-            Log::info('api token:');
-            Log::info($this->token);
+            
             Log::info('json response:');
             Log::info(json_decode($response->getBody()->getContents(), true));
             return json_decode($response->getBody()->getContents(), true);
