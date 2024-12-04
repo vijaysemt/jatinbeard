@@ -4,7 +4,7 @@ namespace App\Services;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
-
+use Illuminate\Support\Facades\Log;
 class ShiprocketService
 {
     protected $apiUrl;
@@ -58,7 +58,14 @@ class ShiprocketService
                 ],
                 'json' => $orderData
             ]);
-
+            Log::info('response:');
+            Log::info($response);
+            Log::info('orderData:');
+            Log::info($orderData);
+            Log::info('api token:');
+            Log::info($this->token);
+            Log::info('json response:');
+            Log::info(json_decode($response->getBody()->getContents(), true));
             return json_decode($response->getBody()->getContents(), true);
 
         } catch (RequestException $e) {
