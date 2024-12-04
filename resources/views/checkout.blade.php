@@ -252,7 +252,7 @@
                             <hr> <!-- Horizontal line below the note -->
                         </div>
                         <!-- Total amount -->
-                        <h6 class="card-title mb-3" id="amt_text">Total Amount : ₹ {{ $total + $totalDeliveryCharge }}</h6>
+                        <h6 class="card-title mb-3" >Total Amount : ₹ <span id="amt_text">{{ $total + $totalDeliveryCharge }}</span></h6>
                         <input type="hidden" name="total_amount" id="total_amount"
                             value="{{ $total + $totalDeliveryCharge }}">
 
@@ -501,9 +501,9 @@
             const totalAmountElement =$('#total_amount').val(total_amt);
 
             if (paymentMethod === 'Cash on Delivery') {
-                totalAmount = total_amt + 50; // Add ₹50 for Cash on Delivery
+                totalAmount = parseInt(total_amt)  + 50; // Add ₹50 for Cash on Delivery
             } else {
-                totalAmount = total_amt; // No extra charge for Razorpay
+                totalAmount = parseInt(total_amt); // No extra charge for Razorpay
             }
 
             // Update the total amount display
