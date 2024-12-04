@@ -358,7 +358,7 @@
     <script>
         let all_dashboard_data;
         let currentPage = 1; // Initially, we start at page 1
-        let ordersPerPage = 3; // Number of orders to display per page
+        let ordersPerPage = 5; // Number of orders to display per page
         $(document).ready(function() {
 
             fetchDashboardData(); // Make an AJAX request to fetch data
