@@ -59,8 +59,7 @@ class ShiprocketService
                 'json' => $orderData
             ]);
             
-            Log::info('json response:');
-            Log::info(json_decode($response->getBody()->getContents(), true));
+           
             return json_decode($response->getBody()->getContents(), true);
 
         } catch (RequestException $e) {
