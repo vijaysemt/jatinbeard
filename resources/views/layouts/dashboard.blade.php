@@ -358,7 +358,7 @@
     <script>
         let all_dashboard_data;
         let currentPage = 1; // Initially, we start at page 1
-        let ordersPerPage = 5; // Number of orders to display per page
+        let ordersPerPage = 3; // Number of orders to display per page
         $(document).ready(function() {
 
             fetchDashboardData(); // Make an AJAX request to fetch data
@@ -493,11 +493,11 @@
             });
 
             // Update the pagination controls
-            updatePaginationControls(totalOrders, type);
+            updatePaginationControls(totalOrders, type,1);
         }
 
         // Function to update pagination controls
-        function updatePaginationControls(totalOrders, type) {
+        function updatePaginationControls(totalOrders, type,list_type=1) {
             let totalPages = Math.ceil(totalOrders / ordersPerPage); // Total pages required
             let paginationControls = $('#pagination-controls');
             paginationControls.empty(); // Clear existing pagination controls
@@ -508,7 +508,7 @@
             // Add Previous button
             if (currentPage > 1) {
                 paginationControls.append('<button class="btn btn-secondary m-1" onclick="changePage(' + type + ', ' + (
-                    currentPage - 1) + ',1)">Previous</button>');
+                    currentPage - 1) + ', ' + list_type + ')">Previous</button>');
             }
 
             // Add page numbers
@@ -516,8 +516,7 @@
                 if (i === currentPage) {
                     paginationControls.append('<button class="btn btn-primary" disabled>' + i + '</button>');
                 } else {
-                    paginationControls.append('<button class="btn btn-secondary m-1" onclick="changePage(' + type + ', ' + i +
-                        ',1)">' + i +
+                    paginationControls.append('<button class="btn btn-secondary m-1" onclick="changePage(' + type + ', ' + i + ', ' + list_type + ')">' + i +
                         '</button>');
                 }
             }
@@ -525,12 +524,15 @@
             // Add Next button
             if (currentPage < totalPages) {
                 paginationControls.append('<button class="btn btn-secondary m-1" onclick="changePage(' + type + ', ' + (
-                    currentPage + 1) + ', 1)">Next</button>');
+                    currentPage + 1) + ', ' + list_type + ')">Next</button>');
             }
         }
 
         // Function to handle page change
         function changePage(type, pageNumber,list_type=1) {
+            console.log('type',type);
+            console.log('pageNumber',pageNumber);
+            console.log('list_type',list_type);
             currentPage = pageNumber; // Set current page to the selected page
             if(list_type == 1) {
                 updateOrdersTable(type,pageNumber); // Re-fetch and update the orders for the new page (1 refers to all orders type)
@@ -599,6 +601,6 @@
             });
 
             // Update the pagination controls
-            updatePaginationControls(totalProducts, type);
+            updatePaginationControls(totalProducts, 1,2);
         }
     </script>

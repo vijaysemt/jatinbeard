@@ -203,10 +203,17 @@
                                     <input type="text" class="form-control" value="{{ $data['tax'] }}"  name="tax">
                                 </div>
                             </div>
-                            <div class="col-lg-6 col-12">
+                            <div class="col-lg-4 col-12">
                                 <div class="form-group">
                                     <label for="">SKU</label>
                                     <input type="text" class="form-control" value="{{ $data['sku'] }}"  name="sku">
+                                </div>
+                            </div>
+                            <div class="col-lg-2 col-2">
+                                <div class="form-group">
+                                    <label for="">Rating (max. 5)</label>
+                                    <input type="number" class="form-control" name="rating" value="{{ $data['rating'] }}" min="1" max="5" step="0.01">
+                                  
                                 </div>
                             </div>
                             <div class="col-lg-6 col-12"></div>

@@ -48,7 +48,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach($orders as $order)
+                                        @foreach ($orders as $order)
                                             <tr>
                                                 <td>{{ $order->id }}</td>
                                                 <td>{{ $order->first_name }} {{ $order->last_name }}</td>
@@ -56,13 +56,17 @@
                                                 <td>{{ $order->payment_method }}</td>
                                                 <td>{{ $order->created_at->format('Y-m-d') }}</td>
                                                 <td>
-                                                    <a href="{{ route('orders.view', $order->id) }}" class="btn btn-primary btn-sm">View</a>
+                                                    <a href="{{ route('orders.view', $order->id) }}"
+                                                        class="btn btn-primary btn-sm">View</a>
                                                 </td>
                                             </tr>
                                         @endforeach
                                     </tbody>
                                 </table>
-
+                                <!-- Pagination links -->
+                                <div class="d-flex justify-content-end">
+                                    {{ $orders->links('pagination::bootstrap-4') }}
+                                </div>
 
                             </div>
                         </div>

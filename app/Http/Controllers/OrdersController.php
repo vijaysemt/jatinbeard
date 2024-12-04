@@ -9,7 +9,7 @@ use App\Models\OrderItem;
 class OrdersController extends Controller
 {
     public function index(){
-        $orders = Order::with('orderItems')->paginate(20);
+        $orders = Order::with('orderItems')->orderBy('created_at', 'desc')->paginate(10);
         return view('admin.orders.index', compact('orders'));
     }
     public function view($id){

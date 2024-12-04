@@ -168,94 +168,97 @@
                             <div class="col-md-6 col-12  mb-3">
                                 <p class="mb-0">Gst Number(Optional)</p>
                                 <div class="form-outline">
-                                    <input type="number" id="gst" name="gst"  value="{{ old('gst') }}"  class="form-control @error('gst') is-invalid @enderror" />
+                                    <input type="number" id="gst" name="gst" value="{{ old('gst') }}"
+                                        class="form-control @error('gst') is-invalid @enderror" />
                                     @error('gst')
-                                    <div class="invalid-feedback">{{ $message }}</div>
+                                        <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
                             </div>
                         </div>
 
-                            <!--<hr class="my-4" />-->
-                            <h5 class="card-title mb-3" style='display:none'>Products</h5>
-                            <div class="product" style='display:none'>
-                                @foreach ($cartItems as $index => $item)
-                                    <div class="row mb-3 ">
-                                        <div class="col-sm-4">
-                                            <label class="control-label mb-0">Product name</label>
-                                            <div class="form-outline">
-                                                <input type="hidden"
-                                                    name="order_items[{{ $index }}][product_name]"
-                                                    value="{{ $item->product->name }}" class="form-control" required
-                                                    readonly />
-                                            </div>
+                        <!--<hr class="my-4" />-->
+                        <h5 class="card-title mb-3" style='display:none'>Products</h5>
+                        <div class="product" style='display:none'>
+                            @foreach ($cartItems as $index => $item)
+                                <div class="row mb-3 ">
+                                    <div class="col-sm-4">
+                                        <label class="control-label mb-0">Product name</label>
+                                        <div class="form-outline">
+                                            <input type="hidden"
+                                                name="order_items[{{ $index }}][product_name]"
+                                                value="{{ $item->product->name }}" class="form-control" required
+                                                readonly />
                                         </div>
-                                        <div class="col-sm-4">
-                                            <label class="control-label mb-0">Product price</label>
-                                            <div class="form-outline">
-                                                <input type="hidden"
-                                                    name="order_items[{{ $index }}][product_price]"
-                                                    value="{{ $item->product->price }}" class="form-control" required
-                                                    readonly />
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-4">
-                                            <label class="control-label mb-0">Quantity</label>
-                                            <div class="form-outline">
-                                                <input type="hidden"
-                                                    name="order_items[{{ $index }}][quantity]"
-                                                    value="{{ $item->quantity }}" class="form-control" required
-                                                    readonly />
-                                            </div>
-                                        </div>
-                                        <input type="hidden" name="order_items[{{ $index }}][sku]"
-                                            value="{{ $item->product->sku }}" required readonly />
-                                        <input type="hidden" name="order_items[{{ $index }}][hsn]"
-                                            value="{{ $item->product->hsn }}" required readonly />
-                                        <input type="hidden" name="order_items[{{ $index }}][tax]"
-                                            value="{{ $item->product->tax }}" required readonly />
                                     </div>
-                                @endforeach
-                                <input type="hidden" name="total_length" value="{{ $total_length }}" required
-                                    readonly />
-                                <input type="hidden" name="total_breadth" value="{{ $total_breadth }}" required
-                                    readonly />
-                                <input type="hidden" name="total_height" value="{{ $total_height }}" required
-                                    readonly />
-                                <input type="hidden" name="total_weight" value="{{ $total_weight }}"
-                                    class="form-control" required readonly />
-                            </div>
+                                    <div class="col-sm-4">
+                                        <label class="control-label mb-0">Product price</label>
+                                        <div class="form-outline">
+                                            <input type="hidden"
+                                                name="order_items[{{ $index }}][product_price]"
+                                                value="{{ $item->product->price }}" class="form-control" required
+                                                readonly />
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <label class="control-label mb-0">Quantity</label>
+                                        <div class="form-outline">
+                                            <input type="hidden" name="order_items[{{ $index }}][quantity]"
+                                                value="{{ $item->quantity }}" class="form-control" required
+                                                readonly />
+                                        </div>
+                                    </div>
+                                    <input type="hidden" name="order_items[{{ $index }}][sku]"
+                                        value="{{ $item->product->sku }}" required readonly />
+                                    <input type="hidden" name="order_items[{{ $index }}][hsn]"
+                                        value="{{ $item->product->hsn }}" required readonly />
+                                    <input type="hidden" name="order_items[{{ $index }}][tax]"
+                                        value="{{ $item->product->tax }}" required readonly />
+                                </div>
+                            @endforeach
+                            <input type="hidden" name="total_length" value="{{ $total_length }}" required
+                                readonly />
+                            <input type="hidden" name="total_breadth" value="{{ $total_breadth }}" required
+                                readonly />
+                            <input type="hidden" name="total_height" value="{{ $total_height }}" required
+                                readonly />
+                            <input type="hidden" name="total_weight" value="{{ $total_weight }}"
+                                class="form-control" required readonly />
+                        </div>
 
-                            <!-- Payment method -->
+                        <!-- Payment method -->
 
-                            <h5 class="card-title mb-3">Payment method</h5>
-                            <div class="form-check mb-3">
-                                <input class="form-check-input @error('payment_method') is-invalid @enderror"
-                                    type="radio" name="payment_method" id="cashOnDelivery"
-                                    value="Cash on Delivery" required />
-                                <label class="form-check-label" for="cashOnDelivery">Cash on Delivery</label>
-                                @error('payment_method')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            <div class="form-check mb-3">
-                                <input class="form-check-input @error('payment_method') is-invalid @enderror"
-                                    type="radio" name="payment_method" id="razorpay" value="Razorpay" required
-                                    checked />
-                                <label class="form-check-label" for="razorpay">Razorpay</label>
-                                @error('payment_method')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
+                        <h5 class="card-title mb-3">Payment method</h5>
+                        <div class="form-check mb-3">
+                            <input class="form-check-input @error('payment_method') is-invalid @enderror"
+                                type="radio" name="payment_method" id="cashOnDelivery" value="Cash on Delivery"
+                                required onchange="updatePaymentAmount()" />
+                            <label class="form-check-label" for="cashOnDelivery">Cash on Delivery </label>
+                            @error('payment_method')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="form-check mb-3">
+                            <input class="form-check-input @error('payment_method') is-invalid @enderror"
+                                type="radio" name="payment_method" id="razorpay" value="Razorpay" required
+                                checked onchange="updatePaymentAmount()" />
+                            <label class="form-check-label" for="razorpay">Razorpay</label>
+                            @error('payment_method')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="mb-3">
+                            <p>Note: <strong>Cash on Delivery charges ₹50</strong></p>
+                            <hr> <!-- Horizontal line below the note -->
+                        </div>
+                        <!-- Total amount -->
+                        <h6 class="card-title mb-3" id="amt_text">Total Amount : ₹ {{ $total + $totalDeliveryCharge }}</h6>
+                        <input type="hidden" name="total_amount" id="total_amount"
+                            value="{{ $total + $totalDeliveryCharge }}">
 
-                            <!-- Total amount -->
-                            <h6 class="card-title mb-3">Total Amount : ₹ {{ $total + $totalDeliveryCharge }}</h6>
-                            <input type="hidden" name="total_amount" id="total_amount"
-                                value="{{ $total + $totalDeliveryCharge }}">
 
-
-                            <button type="submit" class="btn btn-primary" id="place_order">Place order</button>
-                            <input type="hidden" name="razorpay_payment_id" value="pay_PQJGzp24f7HlnZ">
+                        <button type="submit" class="btn btn-primary" id="place_order">Place order</button>
+                        <input type="hidden" name="razorpay_payment_id" value="pay_PQJGzp24f7HlnZ">
                     </form>
 
                 </div>
@@ -277,7 +280,25 @@
         let total_amt = "{{ $total + $totalDeliveryCharge }}";
         console.log('myVariable', total_amt);
         redirect(); // check if amount not valid
-        
+        function updatePaymentAmount() {
+            $('#total_amount').val(total_amt);
+            const paymentMethod = document.querySelector('input[name="payment_method"]:checked').value;
+
+            // Get the element where the total amount is displayed
+            const totalAmountElement =$('#total_amount').val(total_amt);
+
+            if (paymentMethod === 'Cash on Delivery') {
+                totalAmount = total_amt + 50; // Add ₹50 for Cash on Delivery
+            } else {
+                totalAmount = total_amt; // No extra charge for Razorpay
+            }
+
+            // Update the total amount display
+            // totalAmountElement.textContent = '₹' + totalAmount;
+
+            $('#total_amount').val(totalAmount);
+            $('#amt_text').html(totalAmount);
+        }
 
         $('#place_order').on('click', function(e) {
             redirect(); // check if amount not valid
@@ -289,7 +310,7 @@
             $('.invalid-feedback').remove(); // Remove error messages
             $('input').removeClass('is-invalid'); // Remove the invalid class from fields
             let valid = true;
-             // Check if required fields are filled (excluding hidden fields)
+            // Check if required fields are filled (excluding hidden fields)
             $('input[required]:visible').each(function() {
                 let field = $(this);
                 let fieldName = field.attr('name');
@@ -311,11 +332,12 @@
             if (phone.startsWith('0')) {
                 phone = phone.substring(1); // Remove the first character (leading zero)
             }
-            let phoneRegex = /^[0-9]{10}$/;  // Regex for exactly 10 digits
+            let phoneRegex = /^[0-9]{10}$/; // Regex for exactly 10 digits
             if (phone && !phoneRegex.test(phone)) {
                 valid = false;
                 $('#phone').addClass('is-invalid');
-                $('#phone').after('<div class="invalid-feedback">Phone number must be exactly 10 digits.</div>');
+                $('#phone').after(
+                    '<div class="invalid-feedback">Phone number must be exactly 10 digits.</div>');
             } else {
                 // $('#phone').removeClass('is-invalid');
             }
@@ -370,7 +392,7 @@
                                                 "razorpay_payment_id:" +
                                                 response
                                                 .razorpay_payment_id
-                                                );
+                                            );
                                             console.log(
                                                 "razorpay_order_id:" +
                                                 response
@@ -401,7 +423,9 @@
                                         console.error(
                                             'Payment verification failed:',
                                             error);
-                                            $('#place_order').prop('disabled', false).text('Place Order');
+                                        $('#place_order').prop(
+                                            'disabled', false).text(
+                                            'Place Order');
                                     }
                                 });
                             },
@@ -433,11 +457,11 @@
                 // If the pay
                 $('#place_order').prop('disabled', true).text('Loading...');
                 //payment method is Cash on Delivery or other, submit the form directly
-                $('#total_amount').val(total_amt);  //set amount again for security reason
+                $('#total_amount').val(total_amt); //set amount again for security reason
                 setTimeout(() => {
                     $('#orderForm').submit();
                 }, 10);
-                
+
             }
         });
 
@@ -478,14 +502,12 @@
         });
 
         function redirect(params) {
-            if(!total_amt || total_amt == '0') {
-            window.location.href = 'cart';
+            if (!total_amt || total_amt == '0') {
+                window.location.href = 'cart';
+            }
         }
-        }
+
+        
     });
+   
 </script>
-
-
-
-
-
