@@ -59,7 +59,7 @@ class ShiprocketService
                 'json' => $orderData
             ]);
             Log::info('response:');
-            Log::info($response);
+            // Log::info($response);
             Log::info('orderData:');
             Log::info($orderData);
             Log::info('api token:');
