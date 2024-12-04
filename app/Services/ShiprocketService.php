@@ -60,7 +60,11 @@ class ShiprocketService
             ]);
             
            
-            return json_decode($response->getBody()->getContents(), true);
+           
+            $res = json_decode($response->getBody()->getContents(), true);
+            Log::info('json response:');
+            Log::info($res);
+            return $res;
 
         } catch (RequestException $e) {
             // Handle the error and return a meaningful response
