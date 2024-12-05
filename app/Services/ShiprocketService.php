@@ -62,8 +62,8 @@ class ShiprocketService
            
            
             $res = json_decode($response->getBody()->getContents(), true);
-            Log::info('json response:');
-            Log::info($res);
+            // Log::info('json response:');
+            // Log::info($res);
             return $res;
 
         } catch (RequestException $e) {
@@ -73,7 +73,7 @@ class ShiprocketService
     }
 
     // Get shipping label or track the order
-    public function getTrackingDetails($shipmentId)
+    public function getTrackingDetails($shipmentId,$orderId)
     {
         try {
             $response = $this->client->get($this->apiUrl . '/courier/track', [
@@ -81,7 +81,8 @@ class ShiprocketService
                     'Authorization' => 'Bearer ' . $this->token, // Using token from the constructor
                 ],
                 'query' => [
-                    'shipment_id' => $shipmentId
+                    'shipment_id' => $shipmentId,
+                    'order_id' => $orderId
                 ]
             ]);
 

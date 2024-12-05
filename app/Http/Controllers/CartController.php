@@ -330,6 +330,8 @@ class CartController extends Controller
             $validatedData['user_id'] = $guestUserId;
             $validatedData['shipment_id'] = '0';
             $validatedData['gst'] = $request['gst'];
+            $validatedData['total_amount'] =  $validatedData['payment_method'] === 'Cash on Delivery' ? 
+            $validatedData['total_amount'] + 50 : $validatedData['total_amount'];
             // $validatedData['razorpay_order_id'] = '0';
             $order = Order::create($validatedData);
             $this->saveOrderItems($order, $validatedData['order_items']);
@@ -339,9 +341,10 @@ class CartController extends Controller
                 $order->transaction_id = $validatedData['razorpay_payment_id'];
                 $order->save();
                 $shiprocketResponse = $this->createShiprocketOrder($shiprocketService, $validatedData, $order);
+                Log::info('shiprocketResponse');
                 Log::info($shiprocketResponse);
                 if ($shiprocketResponse['status_code'] == 1) {
-                    $this->finalizeOrder($order, $shiprocketResponse['shipment_id'], $validatedData);
+                    $this->finalizeOrder($order, $shiprocketResponse, $validatedData);
                     $this->captureRazorpayPayment($validatedData, $order->razorpay_order_id);
                     Mail::to($validatedData['email'])->send(new OrderMail($order));
                     return redirect()->route('payment.success', ['orderId' => $order->id])->with('message', 'Your order was successful!');
@@ -355,9 +358,8 @@ class CartController extends Controller
             Log::info('shiprocketResponse');
             Log::info($shiprocketResponse);
             if ($shiprocketResponse['status_code'] == 1) {
-                $this->finalizeOrder($order, $shiprocketResponse['shipment_id'], $validatedData);
-                Log::info('env_smtp_username');
-                Log::info(config('mail.mailers.smtp.username'));
+                $this->finalizeOrder($order, $shiprocketResponse, $validatedData);
+              
                 Mail::to($validatedData['email'])->send(new OrderMail($order));
                 return redirect()->route('payment.success', ['orderId' => $order->id])->with('message', 'Your order was successful!');
                 // return redirect()->back()->with('success', 'Order placed successfully with Cash on Delivery.');
@@ -465,6 +467,8 @@ class CartController extends Controller
         // Determine the payment method
         if ($validatedData['payment_method'] === 'Cash on Delivery') {
             $payment_method = 'COD';
+            // add cash on delivery charges 50
+            $validatedData['total_amount'] = $validatedData['total_amount'] + 50;
         } else {
             $payment_method = 'prepaid';
         }
@@ -506,12 +510,14 @@ class CartController extends Controller
         ];
     }
 
-    protected function finalizeOrder($order, $shipmentId, $validatedData)
+    protected function finalizeOrder($order, $shiprocketdata, $validatedData)
     {
+        $shipmentId = $shiprocketdata['shipment_id'];
         // Update shipment ID and save the order
         $order->shipment_id = $shipmentId;
+        $order->razorpay_order_id = $shiprocketdata['order_id'];
         $order->save();
-
+       
         // Send order confirmation email
         // Mail::to($validatedData['email'])->send(new OrderMail($order));
 

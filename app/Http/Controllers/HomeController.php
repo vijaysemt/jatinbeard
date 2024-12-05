@@ -50,10 +50,10 @@ class HomeController extends Controller
         } 
         $startDate = $startDate. ' 00:00:00'; // Start of the day
         $endDate = $endDate.' 23:59:59'; 
-        Log::info('start date');
-        Log::info($startDate);
-        Log::info('endDate');
-        Log::info($endDate);
+        // Log::info('start date');
+        // Log::info($startDate);
+        // Log::info('endDate');
+        // Log::info($endDate);
         // Fetch orders between the given date range
         $query = Order::query();
         $orders = $query->where('created_at', '>=', $startDate) // Start date filter

@@ -92,6 +92,12 @@
                                             <td>₹{{ number_format($item->product_price, 2) }}</td>
                                         </tr>
                                     @endforeach
+                                    @if( $order->payment_method == 'Cash on Delivery')
+                                    <tr>
+                                        <td>Delivery Charge</td>
+                                        <td>₹50</td>
+                                    </tr>
+                                    @endif
                                     <tr>
                                         <th>Total Amount</th>
                                         <th>₹{{ number_format($order->total_amount, 2) }}</th>
