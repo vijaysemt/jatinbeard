@@ -72,8 +72,8 @@ class ShiprocketService
         }
     }
 
-    // Get shipping label or track the order
-    public function getTrackingDetails($shipmentId,$orderId)
+    // Get shipping label or track the order by order id
+    public function getTrackingDetailsByOrderId($orderId)
     {
         try {
             $response = $this->client->get($this->apiUrl . '/courier/track', [
@@ -81,7 +81,6 @@ class ShiprocketService
                     'Authorization' => 'Bearer ' . $this->token, // Using token from the constructor
                 ],
                 'query' => [
-                    'shipment_id' => $shipmentId,
                     'order_id' => $orderId
                 ]
             ]);
@@ -93,4 +92,26 @@ class ShiprocketService
             return ['error' => $e->getMessage()];
         }
     }
+
+     // Get shipping label or track the order by shipment id
+     public function getTrackingDetailsByShipId($shipmentId)
+     {
+         try {
+             $response = $this->client->get($this->apiUrl . '/courier/track/shipment/'.$shipmentId, [
+                 'headers' => [
+                     'Authorization' => 'Bearer ' . $this->token, // Using token from the constructor
+                 ],
+                //  'query' => [
+                //      'shipment_id' => $shipmentId,
+                //      'order_id' => $orderId
+                //  ]
+             ]);
+ 
+             return json_decode($response->getBody()->getContents(), true);
+ 
+         } catch (RequestException $e) {
+             // Handle the error and return a meaningful response
+             return ['error' => $e->getMessage()];
+         }
+     }
 }
