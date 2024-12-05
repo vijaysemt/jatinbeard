@@ -74,9 +74,10 @@
 
                         <!-- Order Details -->
                         <div class="order-details">
-                            <!--<p><strong>Order ID:</strong> {{ $order->id }}</p>
-                            <p><strong>Payment Method:</strong> {{ $order->payment_method }}</p>-->
-                            <p><strong>Transaction/Shipment ID:</strong> {{ $order->transaction_id?$order->transaction_id:$order->shipment_id }}</p>
+                            <div class="d-flex justify-content-between">
+                                <div><strong>Order ID:</strong> {{ $order->razorpay_order_id }}</div>
+                                <div><strong>Transaction/Shipment ID:</strong> {{ $order->transaction_id ? $order->transaction_id : $order->shipment_id }}</div>
+                            </div>
 
                             <table class="table table-bordered mt-3">
                                 <thead>
