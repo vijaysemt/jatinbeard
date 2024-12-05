@@ -467,8 +467,6 @@ class CartController extends Controller
         // Determine the payment method
         if ($validatedData['payment_method'] === 'Cash on Delivery') {
             $payment_method = 'COD';
-            // add cash on delivery charges 50
-            $validatedData['total_amount'] = $validatedData['total_amount'] + 50;
         } else {
             $payment_method = 'prepaid';
         }
