@@ -1,0 +1,179 @@
+footer {
+    color: #b5b5b5 !important;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+footer .p {
+    line-height: 5px !important;
+    color: #b5b5b5 !important;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+
+
+footer .social-widget a {
+    margin-right: 10px;
+    color: #fff;
+}
+
+footer ul li a {
+    margin-right: 10px;
+    color: #b5b5b5;
+    line-height: 30px;
+    font-size: 14px;
+    font-weight: 400;
+}
+
+.text-justify {
+    text-align: justify !important;
+}
+
+.btn-success {
+    background-color: #25D366;
+}
+
+.btn-whatesapp {
+    padding: 13px 13px !important;
+    margin-top: 5px;
+}
+
+.carousel-control-next-icon,
+.carousel-control-prev-icon {
+    width: 1rem;
+    height: 1rem;
+    border-radius: 500px;
+}
+
+
+.alert {
+    border-radius: 0;
+    color: #fff;
+    padding: 15px 0px;
+    margin-bottom: 0px;
+}
+
+.alert-custom {
+    background-color: #111;
+    color: #fff;
+    text-align: center;
+}
+
+.btn-close {
+    padding: 5px auto;
+    font-size: 10px;
+
+}
+
+.alert-dismissible .btn-close {
+    padding: 25px;
+    color: #fff;
+    filter: contrast(0%) brightness(10);
+}
+
+.logo-main {
+    max-width: 180px;
+}
+
+@media (max-width:667px) {
+
+    .alert {
+        border-radius: 0;
+        color: #fff;
+        font-size: 15px;
+        line-height: 21px;
+        padding: 15px 20px;
+        margin-bottom: 0px;
+    }
+
+    .logo-main {
+        max-width: 120px;
+    }
+
+    .product-item {
+        margin-bottom: 12px;
+        padding: 20px;
+        border-radius: 10px;
+        background-color: #fff;
+        min-height: auto;
+    }
+
+    .product-item .product-info .title {
+        color: #333;
+        font-size: 20px;
+        font-weight: 700;
+        margin-bottom: 6px;
+    }
+
+    .btn-whatesapp {
+        font-size: 14px !important;
+    }
+
+
+    .product-item .product-info .prices {
+        color: #333;
+        font-size: 16px;
+        line-height: 30px;
+        font-weight: 700;
+    }
+
+    .product-item .product-thumb .ribbon {
+        background-color: #00642c;
+        border-radius: 50%;
+        color: #fff;
+        font-weight: 400;
+        height: 40px;
+        font-size: 11px;
+        left: 20px;
+        line-height: 40px;
+        position: absolute;
+        right: auto;
+        text-align: center;
+        top: 5px;
+        width: 40px;
+    }
+
+    .product-item .product-thumb .ribbon.align-right {
+        left: auto;
+        right: 5px;
+    }
+
+    .product-item .product-thumb .product-action {
+        display: none;
+    }
+
+    .discount-content a {
+        color: #fff;
+        font-size: 12px;
+        font-weight: 500;
+    }
+
+    .about-area.about-default-area {
+        padding: 16px 0 50px 0px;
+    }
+
+    .discount-content.discount-content-style2 p {
+        color: #fff;
+        font-size: 14px;
+        padding: 0px 16px;
+        margin-bottom: 28px;
+    }
+
+    .discount-content.discount-content-style2 h3 {
+        font-size: 30px;
+        line-height: 38px;
+        margin-bottom: 15px;
+    }
+
+    .single-product-info .prices {
+        margin-bottom: 6px;
+        padding: 14px 0px;
+    }
+
+    .pt-80{
+        padding-top: 40px !important;
+    }
+
+
+}
