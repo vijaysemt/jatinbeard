@@ -117,6 +117,7 @@ Route::middleware(['auth', 'isAdmin'])->group(function () {
 
     //Only redirection links
     Route::get('/profile', [AdminController::class,'profile'])->name('profile');
+    Route::put('/admin/user/{id}/update-password', [AdminController::class, 'updatePassword'])->name('admin.update.password');
 
     Route::get('/productlist', [ProductController::class,'productlist'])->name('productlist');
     Route::get('/createproduct', [ProductController::class,'createproduct'])->name('createproduct');

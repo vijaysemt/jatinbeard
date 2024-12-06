@@ -6,6 +6,9 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Registration;
 use App\Models\Contact;
 use App\Models\Borrow;
+use App\Models\User;
+use Hash;
+
 
 
 
@@ -54,6 +57,31 @@ class AdminController extends Controller
         $numb= Registration::all();
         return redirect('home',['data'=>$numb]);
     }
+
+
+     // Update password method
+     public function updatePassword(Request $request, $id)
+     {
+         $user = User::find($id);
+ 
+         // Validate the inputs
+         $request->validate([
+             'old_password' => 'required',
+             'new_password' => 'required|confirmed|min:6',
+         ]);
+ 
+         // Check if the old password is correct
+         if (!Hash::check($request->old_password, $user->password)) {
+             return redirect()->back()->withErrors(['old_password' => 'Old password is incorrect']);
+         }
+ 
+         // Update the password
+         $user->password = Hash::make($request->new_password);
+         $user->save();
+ 
+         return redirect()->route('profile')->with('success', 'Password updated successfully');
+     }
+ 
 
 
 

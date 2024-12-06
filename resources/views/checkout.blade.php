@@ -229,7 +229,75 @@
                         <!-- Payment method -->
 
                         <h5 class="card-title mb-3">Payment method</h5>
-                        <div class="form-check mb-3">
+                        <div class="mb-4">
+                            {{-- <h4 class="mb-3">Prepaid or COD</h4> --}}
+                            <div
+                                class="border rounded shadow-sm"
+                                style="overflow: hidden;"
+                            >
+                                <!-- Cash on Delivery Option -->
+                                <div class="form-check mb-0">
+                                    <label
+                                        class="form-check-label d-flex align-items-center justify-content-between px-3 py-2 border-bottom"
+                                        for="cashOnDelivery"
+                                        style="cursor: pointer;"
+                                    >
+                                        <div class="d-flex align-items-center gap-2">
+                                            <input
+                                                class="form-check-input mb-3 @error('payment_method') is-invalid @enderror"
+                                                type="radio"
+                                                name="payment_method"
+                                                id="cashOnDelivery"
+                                                value="Cash on Delivery"
+                                                required
+                                                onchange="updatePaymentAmount()"
+                                            />
+                                            <div class="d-flex flex-column">
+                                                <span>Cash on Delivery - COD</span>
+                                                <small class="text-muted">Pay Online to Save Charges</small>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex flex-column text-end">
+                                            <span class="fw-bold text-muted">₹50.00</span>
+                                        </div>
+                                    </label>
+                                    @error('payment_method')
+                                        <div class="invalid-feedback px-3">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                        
+                                <!-- Razorpay Option -->
+                                <div class="form-check mb-0">
+                                    <label
+                                        class="form-check-label d-flex align-items-center justify-content-between px-3 py-2"
+                                        for="razorpay"
+                                        style="cursor: pointer;"
+                                    >
+                                        <div class="d-flex align-items-center gap-2">
+                                            <input
+                                                class="form-check-input @error('payment_method') is-invalid @enderror"
+                                                type="radio"
+                                                name="payment_method"
+                                                id="razorpay"
+                                                value="Razorpay"
+                                                required
+                                                checked
+                                                onchange="updatePaymentAmount()"
+                                            />
+                                            <span>Razorpay</span>
+                                        </div>
+                                        <span class="fw-bold text-success">FREE</span>
+                                    </label>
+                                    @error('payment_method')
+                                        <div class="invalid-feedback px-3">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+                        
+                        
+                        
+                        {{-- <div class="form-check mb-3">
                             <input class="form-check-input @error('payment_method') is-invalid @enderror"
                                 type="radio" name="payment_method" id="cashOnDelivery" value="Cash on Delivery"
                                 required onchange="updatePaymentAmount()" />
@@ -246,11 +314,11 @@
                             @error('payment_method')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
-                        </div>
-                        <div class="mb-3">
+                        </div> --}}
+                        {{-- <div class="mb-3">
                             <p>Note: <strong>Cash on Delivery charges ₹50</strong></p>
-                            <hr> <!-- Horizontal line below the note -->
-                        </div>
+                            <hr>
+                        </div> --}}
                         <!-- Total amount -->
                         <h6 class="card-title mb-3" >Total Amount : ₹ <span id="amt_text">{{ $total + $totalDeliveryCharge }}</span></h6>
                         <input type="hidden" name="total_amount" id="total_amount"
