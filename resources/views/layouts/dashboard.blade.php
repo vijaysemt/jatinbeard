@@ -251,10 +251,6 @@
                     </div>
 
                     <div class="col-md-3">
-
-
-
-
                         <div class="card">
                             <div class="card-body d-flex align-items-center justify-content-between">
 
@@ -272,6 +268,28 @@
                             </div>
                             <div class="card-footer bg-danger clickable text-white text-decoration-none"
                                 onclick="updateStockProducts(2)">
+                                View
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card">
+                            <div class="card-body d-flex align-items-center justify-content-between">
+
+                                <div class="text-start ms-3">
+                                    <p class="card-text display-4 mb-0">
+                                        <span id="outOfStock" class="fw-bold text-danger"></span>
+
+                                    </p>
+                                    <h4 class="card-title ">Track Order</h4>
+                                </div>
+                                <!-- Icon -->
+                                <div class="text-end">
+                                    <i class="fa fa-shipping-fast text-success fs-3 fa-2x"></i>
+                                </div>
+                            </div>
+                            <div class="card-footer bg-success clickable text-white text-decoration-none"
+                                onclick="trackOrder()">
                                 View
                             </div>
                         </div>
@@ -602,5 +620,10 @@
 
             // Update the pagination controls
             updatePaginationControls(totalProducts, 1,2);
+        }
+
+        function trackOrder() {
+            
+            window.open('https://jatinbeard.shiprocket.co/tracking', '_blank');
         }
     </script>

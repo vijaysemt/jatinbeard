@@ -1,4 +1,4 @@
-<footer style="background: #111" class=" text-md-start text-center text-light py-md-5 py-4">
+<footer style="background: #fea444" class=" text-md-start text-center text-light py-md-5 py-4">
     <div class="container">
         <div class=" mt-5">
             <div class="row">
@@ -57,9 +57,11 @@
     <div class="container">
         <div class="row">
             <div class="col-md-7 order-md-0  order-1">
-                <p class="">© 2023 Jatin Beard Oil. All rights reserved. Designed by <a target="_blank"
+                <p class="">© 2023 Jatin Beard Oil. All rights reserved. 
+                    {{-- Designed by <a target="_blank"
                         class="" style="color: #999" href="https://digitalmagnetix.in/"><u>
-                            DigitalMagnetix</u></a><br>
+                            DigitalMagnetix</u></a> --}}
+                            <br>
 
                     <span class="text-warning">
                         Disclaimer: The Image is for representation purposes only. The packaging you receive might ARA
