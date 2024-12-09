@@ -115,7 +115,7 @@
                                 <label class="control-label mb-0">Flat,house number,floor,bulding</label>
                                 <div class="form-outline">
                                     <input type="text" id="address" name="address" value="{{ old('address') }}"
-                                        class="form-control @error('address') is-invalid @enderror" required />
+                                        class="form-control @error('address') is-invalid @enderror" required minlength="3"/>
                                     @error('address')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -125,7 +125,7 @@
                                 <label class="control-label mb-0">Area,street,sector,village</label>
                                 <div class="form-outline">
                                     <input type="text" id="house" name="house" value="{{ old('house') }}"
-                                        class="form-control @error('house') is-invalid @enderror" required />
+                                        class="form-control @error('house') is-invalid @enderror" required minlength="3" />
                                     @error('house')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -364,15 +364,23 @@
             // Check if required fields are filled (excluding hidden fields)
             $('input[required]:visible').each(function() {
                 let field = $(this);
+               
                 let fieldName = field.attr('name');
-
+                let fieldValue = field.val();
                 // Check if field is empty or invalid
                 if (field.val() === '') {
                     valid = false;
                     field.addClass('is-invalid');
                     field.after('<div class="invalid-feedback">This field is required.</div>');
-                } else {
+                } else if (fieldValue.length < 3 && (fieldName == 'address' || fieldName == 'house')) {
+                    console.log('field',field);
+                    console.log('name',field.attr('name'));
+                    isValid = false;
+                    field.addClass('is-invalid');
+                    field.after('<div class="invalid-feedback">This field must be at least 3 characters long.</div>');
+                }  else {
                     field.removeClass('is-invalid');
+                    field.next('.invalid-feedback').remove(); // Remove the error message if valid
                 }
             });
             // Phone number validation (ensure it's exactly 10 digits)
