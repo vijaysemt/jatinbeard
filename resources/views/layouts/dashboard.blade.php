@@ -307,6 +307,8 @@
                                         <th>Name</th>
                                         <th>Order</th>
                                         <th>Payment</th>
+                                        <th>GST No.</th>
+                                        <th>Meassage</th>
                                         <th>Date</th>
                                         <th>Action</th>
                                     </tr>
@@ -503,6 +505,8 @@
                 row.append('<td>' + order.first_name + ' ' + order.last_name + '</td>');
                 row.append('<td>₹' + parseFloat(order.total_amount).toFixed(2) + '</td>');
                 row.append('<td>' + order.payment_method + '</td>');
+                row.append('<td>' + (order.gst ? order.gst : '-')+ '</td>');
+                row.append('<td>' + (order.message? order.message : '-') + '</td>');
                 row.append('<td>' + formattedDate + '</td>');
                 row.append('<td><a href="' + '{{ route('orders.view', '') }}' + '/' + order.id +
                     '" class="btn btn-primary btn-sm">View</a></td>');

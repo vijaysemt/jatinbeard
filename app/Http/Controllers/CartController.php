@@ -384,7 +384,7 @@ class CartController extends Controller
             'country' => 'required|string|max:255',
             // 'postal_code' => 'required|numeric|digits:6',
             'zip' => 'required|numeric|digits:6',
-            // 'message' => 'nullable|string',
+            'message' => 'nullable|string',
             'total_weight' => 'required',
             'total_length' => 'required',
             'total_breadth' => 'required',

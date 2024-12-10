@@ -115,7 +115,8 @@
                                 <label class="control-label mb-0">Flat,house number,floor,bulding</label>
                                 <div class="form-outline">
                                     <input type="text" id="address" name="address" value="{{ old('address') }}"
-                                        class="form-control @error('address') is-invalid @enderror" required minlength="3"/>
+                                        class="form-control @error('address') is-invalid @enderror" required
+                                        minlength="3" />
                                     @error('address')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -125,7 +126,8 @@
                                 <label class="control-label mb-0">Area,street,sector,village</label>
                                 <div class="form-outline">
                                     <input type="text" id="house" name="house" value="{{ old('house') }}"
-                                        class="form-control @error('house') is-invalid @enderror" required minlength="3" />
+                                        class="form-control @error('house') is-invalid @enderror" required
+                                        minlength="3" />
                                     @error('house')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -175,6 +177,19 @@
                                     @enderror
                                 </div>
                             </div>
+
+                            <!-- Message to seller -->
+                            <div class="col-md-6 col-12  mb-3">
+                                <p class="mb-0">Message to seller</p>
+                                <div class="form-outline">
+                                    <textarea class="form-control @error('message') is-invalid @enderror" id="message" name="message"
+                                        value="{{ old('message') }}" rows="2"></textarea>
+                                    @error('message')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
+
                         </div>
 
                         <!--<hr class="my-4" />-->
@@ -231,27 +246,17 @@
                         <h5 class="card-title mb-3">Payment method</h5>
                         <div class="mb-4">
                             {{-- <h4 class="mb-3">Prepaid or COD</h4> --}}
-                            <div
-                                class="border rounded shadow-sm"
-                                style="overflow: hidden;"
-                            >
+                            <div class="border rounded shadow-sm" style="overflow: hidden;">
                                 <!-- Cash on Delivery Option -->
                                 <div class="form-check mb-0">
                                     <label
                                         class="form-check-label d-flex align-items-center justify-content-between px-3 py-2 border-bottom"
-                                        for="cashOnDelivery"
-                                        style="cursor: pointer;"
-                                    >
+                                        for="cashOnDelivery" style="cursor: pointer;">
                                         <div class="d-flex align-items-center gap-2">
                                             <input
                                                 class="form-check-input mb-3 @error('payment_method') is-invalid @enderror"
-                                                type="radio"
-                                                name="payment_method"
-                                                id="cashOnDelivery"
-                                                value="Cash on Delivery"
-                                                required
-                                                onchange="updatePaymentAmount()"
-                                            />
+                                                type="radio" name="payment_method" id="cashOnDelivery"
+                                                value="Cash on Delivery" required onchange="updatePaymentAmount()" />
                                             <div class="d-flex flex-column">
                                                 <span>Cash on Delivery - COD</span>
                                                 <small class="text-muted">Pay Online to Save Charges</small>
@@ -265,25 +270,17 @@
                                         <div class="invalid-feedback px-3">{{ $message }}</div>
                                     @enderror
                                 </div>
-                        
+
                                 <!-- Razorpay Option -->
                                 <div class="form-check mb-0">
                                     <label
                                         class="form-check-label d-flex align-items-center justify-content-between px-3 py-2"
-                                        for="razorpay"
-                                        style="cursor: pointer;"
-                                    >
+                                        for="razorpay" style="cursor: pointer;">
                                         <div class="d-flex align-items-center gap-2">
                                             <input
                                                 class="form-check-input @error('payment_method') is-invalid @enderror"
-                                                type="radio"
-                                                name="payment_method"
-                                                id="razorpay"
-                                                value="Razorpay"
-                                                required
-                                                checked
-                                                onchange="updatePaymentAmount()"
-                                            />
+                                                type="radio" name="payment_method" id="razorpay" value="Razorpay"
+                                                required checked onchange="updatePaymentAmount()" />
                                             <span>Razorpay</span>
                                         </div>
                                         <span class="fw-bold text-success">FREE</span>
@@ -294,9 +291,9 @@
                                 </div>
                             </div>
                         </div>
-                        
-                        
-                        
+
+
+
                         {{-- <div class="form-check mb-3">
                             <input class="form-check-input @error('payment_method') is-invalid @enderror"
                                 type="radio" name="payment_method" id="cashOnDelivery" value="Cash on Delivery"
@@ -320,7 +317,8 @@
                             <hr>
                         </div> --}}
                         <!-- Total amount -->
-                        <h6 class="card-title mb-3" >Total Amount : ₹ <span id="amt_text">{{ $total + $totalDeliveryCharge }}</span></h6>
+                        <h6 class="card-title mb-3">Total Amount : ₹ <span
+                                id="amt_text">{{ $total + $totalDeliveryCharge }}</span></h6>
                         <input type="hidden" name="total_amount" id="total_amount"
                             value="{{ $total + $totalDeliveryCharge }}">
 
@@ -346,10 +344,10 @@
 <script>
     let total_amt = "{{ $total + $totalDeliveryCharge }}";
     $(document).ready(function() {
-        
+
         console.log('myVariable', total_amt);
         redirect(); // check if amount not valid
-       
+
 
         $('#place_order').on('click', function(e) {
             redirect(); // check if amount not valid
@@ -364,7 +362,7 @@
             // Check if required fields are filled (excluding hidden fields)
             $('input[required]:visible').each(function() {
                 let field = $(this);
-               
+
                 let fieldName = field.attr('name');
                 let fieldValue = field.val();
                 // Check if field is empty or invalid
@@ -372,15 +370,19 @@
                     valid = false;
                     field.addClass('is-invalid');
                     field.after('<div class="invalid-feedback">This field is required.</div>');
-                } else if (fieldValue.length < 3 && (fieldName == 'address' || fieldName == 'house')) {
-                    console.log('field',field);
-                    console.log('name',field.attr('name'));
+                } else if (fieldValue.length < 3 && (fieldName == 'address' || fieldName ==
+                        'house')) {
+                    console.log('field', field);
+                    console.log('name', field.attr('name'));
                     isValid = false;
                     field.addClass('is-invalid');
-                    field.after('<div class="invalid-feedback">This field must be at least 3 characters long.</div>');
-                }  else {
+                    field.after(
+                        '<div class="invalid-feedback">This field must be at least 3 characters long.</div>'
+                        );
+                } else {
                     field.removeClass('is-invalid');
-                    field.next('.invalid-feedback').remove(); // Remove the error message if valid
+                    field.next('.invalid-feedback')
+                .remove(); // Remove the error message if valid
                 }
             });
             // Phone number validation (ensure it's exactly 10 digits)
@@ -566,27 +568,26 @@
             }
         }
 
-        
+
     });
 
     function updatePaymentAmount() {
-            $('#total_amount').val(total_amt);
-            const paymentMethod = document.querySelector('input[name="payment_method"]:checked').value;
+        $('#total_amount').val(total_amt);
+        const paymentMethod = document.querySelector('input[name="payment_method"]:checked').value;
 
-            // Get the element where the total amount is displayed
-            const totalAmountElement =$('#total_amount').val(total_amt);
+        // Get the element where the total amount is displayed
+        const totalAmountElement = $('#total_amount').val(total_amt);
 
-            if (paymentMethod === 'Cash on Delivery') {
-                totalAmount = parseInt(total_amt)  + 50; // Add ₹50 for Cash on Delivery
-            } else {
-                totalAmount = parseInt(total_amt); // No extra charge for Razorpay
-            }
-
-            // Update the total amount display
-            // totalAmountElement.textContent = '₹' + totalAmount;
-
-            $('#total_amount').val(totalAmount);
-            $('#amt_text').html(totalAmount);
+        if (paymentMethod === 'Cash on Delivery') {
+            totalAmount = parseInt(total_amt) + 50; // Add ₹50 for Cash on Delivery
+        } else {
+            totalAmount = parseInt(total_amt); // No extra charge for Razorpay
         }
-   
+
+        // Update the total amount display
+        // totalAmountElement.textContent = '₹' + totalAmount;
+
+        $('#total_amount').val(totalAmount);
+        $('#amt_text').html(totalAmount);
+    }
 </script>
