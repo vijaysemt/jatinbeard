@@ -48,9 +48,10 @@
                                     <li>House : {{ $order->house }}</li>
                                     <li>Postal Code : {{ $order->postal_code }}</li>
                                     <li>Zip : {{ $order->zip }}</li>
-                                    <li>Messege : {{ $order->messege }}</li>
+                                    <li>Messege : {{ $order->message }}</li>
                                     <li>Address : {{ $order->address }}</li>
                                     <li>Payment : {{ $order->payment_method }}</li>
+                                    <li>GST No. : {{ $order->gst }}</li>
                                     <li>Date : {{ $order->created_at->format('Y-m-d') }}</li>
                                     <li>
                                         <h3>Order Items</h3>
