@@ -322,17 +322,22 @@ class CartController extends Controller
         // $order = Order::create($request->all());
         // Mail::to('vijay11@mailinator.com')->send(new OrderMail($order));
         // return;
-       
+        Log::info('process checkout request');
+        Log::info($request->all());
         $validatedData = $this->validateCheckoutData($request);
        
         try {
             $guestUserId = $this->getGuestUserId();
+            Log::info('$guestUserId razorpay');
+            Log::info($guestUserId);
             $validatedData['user_id'] = $guestUserId;
             $validatedData['shipment_id'] = '0';
             $validatedData['gst'] = $request['gst'];
             $validatedData['total_amount'] =  $validatedData['payment_method'] === 'Cash on Delivery' ? 
             $validatedData['total_amount'] + 50 : $validatedData['total_amount'];
             // $validatedData['razorpay_order_id'] = '0';
+            Log::info('order creating');
+            Log::info($validatedData);
             $order = Order::create($validatedData);
             $this->saveOrderItems($order, $validatedData['order_items']);
             if ($validatedData['payment_method'] === 'Razorpay') {
@@ -561,8 +566,10 @@ class CartController extends Controller
 
         try {
             $api->utility->verifyPaymentSignature($attributes); // Verifies payment
+            Log::info('Razorpay Payment verified successfully');
             return response()->json(['message' => 'Payment verified successfully']);
         } catch (\Exception $e) {
+            Log::info('Razorpay Payment verify error');
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
