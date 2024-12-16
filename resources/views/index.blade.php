@@ -271,8 +271,8 @@
                                     <div class="tab-pane fade show active" id="popular-product" role="tabpanel"
                                         aria-labelledby="new-product-tab">
                                         <div class="row">
-
-                                            @foreach (App\Models\Product::get() as $item)
+                                             
+                                            @foreach (App\Models\Product::orderBy('order')->get() as $item)
                                                 <div class="col-12 col-sm-3">
 
                                                     <!-- Start Product Item -->

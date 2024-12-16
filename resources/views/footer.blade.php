@@ -36,7 +36,7 @@
                 </div>
                 <div class="col-md-5">
                     <div class=" ps-md-5 pt-md-0 pt-4">
-                        <p class="text-light mb-3 fw-normal text-uppercase">Abour Us</p>
+                        <p class="text-light mb-3 fw-normal text-uppercase">About Us</p>
                         <p>Jatin Beard , The People's Brand, is here to offer the best solutions for all your SKIN &
                             HAIR problems. A prominent and homegrown Indian brand, Jatin Beard has brought in
                             sophisticated amenities for our clients in the skin and hair department.</p>
