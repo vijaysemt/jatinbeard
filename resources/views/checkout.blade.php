@@ -170,7 +170,7 @@
                             <div class="col-md-6 col-12  mb-3">
                                 <p class="mb-0">Gst Number(Optional)</p>
                                 <div class="form-outline">
-                                    <input type="number" id="gst" name="gst" value="{{ old('gst') }}"
+                                    <input type="text" id="gst" name="gst" value="{{ old('gst') }}"
                                         class="form-control @error('gst') is-invalid @enderror" />
                                     @error('gst')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -349,64 +349,58 @@
         redirect(); // check if amount not valid
 
 
-        $('#place_order').on('click', function(e) {
-            redirect(); // check if amount not valid
-            e.preventDefault();
-            let paymentMethod = $('input[name="payment_method"]:checked').val();
+    $('#place_order').on('click', function(e) {
+    redirect(); // Ensure this function handles its logic correctly
+    e.preventDefault();
 
+    let paymentMethod = $('input[name="payment_method"]:checked').val();
 
-            // Clear previous error messages and reset previous invalid states
-            $('.invalid-feedback').remove(); // Remove error messages
-            $('input').removeClass('is-invalid'); // Remove the invalid class from fields
-            let valid = true;
-            // Check if required fields are filled (excluding hidden fields)
-            $('input[required]:visible').each(function() {
-                let field = $(this);
+    // Clear previous error messages and invalid states
+    $('.invalid-feedback').remove(); 
+    $('input').removeClass('is-invalid'); 
 
-                let fieldName = field.attr('name');
-                let fieldValue = field.val();
-                // Check if field is empty or invalid
-                if (field.val() === '') {
-                    valid = false;
-                    field.addClass('is-invalid');
-                    field.after('<div class="invalid-feedback">This field is required.</div>');
-                } else if (fieldValue.length < 3 && (fieldName == 'address' || fieldName ==
-                        'house')) {
-                    console.log('field', field);
-                    console.log('name', field.attr('name'));
-                    isValid = false;
-                    field.addClass('is-invalid');
-                    field.after(
-                        '<div class="invalid-feedback">This field must be at least 3 characters long.</div>'
-                        );
-                } else {
-                    field.removeClass('is-invalid');
-                    field.next('.invalid-feedback')
-                .remove(); // Remove the error message if valid
-                }
-            });
-            // Phone number validation (ensure it's exactly 10 digits)
-            // Phone number validation (remove leading zero and ensure it's 10 digits)
-            let phone = $('#phone').val().trim();
+    let valid = true;
 
-            // Remove leading zero if the phone number starts with '0'
-            if (phone.startsWith('0')) {
-                phone = phone.substring(1); // Remove the first character (leading zero)
-            }
-            let phoneRegex = /^[0-9]{10}$/; // Regex for exactly 10 digits
-            if (phone && !phoneRegex.test(phone)) {
-                valid = false;
-                $('#phone').addClass('is-invalid');
-                $('#phone').after(
-                    '<div class="invalid-feedback">Phone number must be exactly 10 digits.</div>');
-            } else {
-                // $('#phone').removeClass('is-invalid');
-            }
+    // Required field validation
+    $('input[required]:visible').each(function() {
+        let field = $(this);
+        let fieldName = field.attr('name');
+        let fieldValue = field.val();
 
-            // If validation fails, prevent form submission
-            if (!valid) {
-                return; // Stop execution and show errors
-            }
+        if (fieldValue === '') {
+            valid = false;
+            field.addClass('is-invalid').after('<div class="invalid-feedback">This field is required.</div>');
+        } else if (fieldValue.length < 3 && (fieldName === 'address' || fieldName === 'house')) {
+            valid = false;
+            field.addClass('is-invalid').after('<div class="invalid-feedback">This field must be at least 3 characters long.</div>');
+        } else {
+            field.removeClass('is-invalid');
+            field.next('.invalid-feedback').remove();
+        }
+    });
+
+    // Phone number validation
+    let phone = $('#phone').val().trim();
+    // if (phone.startsWith('0')) {
+    //     phone = phone.substring(1);
+    // }
+    let phoneRegex = /^[0-9]{10}$/;
+    if (!phoneRegex.test(phone)) {
+        valid = false;
+        $('#phone').addClass('is-invalid').after('<div class="invalid-feedback">Phone number must be exactly 10 digits.</div>');
+    }
+
+    // Scroll to the first invalid input field if validation fails
+    if (!valid) {
+        $('html, body').animate({
+            scrollTop: $('.is-invalid:first').offset().top - 20 // Scroll to the first invalid field
+        }, 500);
+        return; // Stop form submission
+    }
+
+    // Proceed with form submission if validation passes
+    console.log('Form is valid. Proceeding with submission.');
+    // Submit the form or continue further processing here
             // Disable the "Place Order" button and change the text to "Loading..."
             $('#place_order').prop('disabled', true).text('Loading...');
             // Check if Razorpay is selected as the payment method
