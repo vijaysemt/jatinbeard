@@ -200,7 +200,7 @@
                                     <div class="col-sm-4">
                                         <label class="control-label mb-0">Product name</label>
                                         <div class="form-outline">
-                                            <input type="hidden"
+                                            <input type="hidden" id="product_name"
                                                 name="order_items[{{ $index }}][product_name]"
                                                 value="{{ $item->product->name }}" class="form-control" required
                                                 readonly />
@@ -209,7 +209,7 @@
                                     <div class="col-sm-4">
                                         <label class="control-label mb-0">Product price</label>
                                         <div class="form-outline">
-                                            <input type="hidden"
+                                            <input type="hidden" id="product_price"
                                                 name="order_items[{{ $index }}][product_price]"
                                                 value="{{ $item->product->price }}" class="form-control" required
                                                 readonly />
@@ -218,26 +218,26 @@
                                     <div class="col-sm-4">
                                         <label class="control-label mb-0">Quantity</label>
                                         <div class="form-outline">
-                                            <input type="hidden" name="order_items[{{ $index }}][quantity]"
+                                            <input type="hidden" id="quantity" name="order_items[{{ $index }}][quantity]"
                                                 value="{{ $item->quantity }}" class="form-control" required
                                                 readonly />
                                         </div>
                                     </div>
-                                    <input type="hidden" name="order_items[{{ $index }}][sku]"
+                                    <input type="hidden" id="sku" name="order_items[{{ $index }}][sku]"
                                         value="{{ $item->product->sku }}" required readonly />
-                                    <input type="hidden" name="order_items[{{ $index }}][hsn]"
+                                    <input id="hsn" type="hidden" name="order_items[{{ $index }}][hsn]"
                                         value="{{ $item->product->hsn }}" required readonly />
-                                    <input type="hidden" name="order_items[{{ $index }}][tax]"
+                                    <input id="tax" type="hidden" name="order_items[{{ $index }}][tax]"
                                         value="{{ $item->product->tax }}" required readonly />
                                 </div>
                             @endforeach
-                            <input type="hidden" name="total_length" value="{{ $total_length }}" required
+                            <input type="hidden" id="total_length" name="total_length" value="{{ $total_length }}" required
                                 readonly />
-                            <input type="hidden" name="total_breadth" value="{{ $total_breadth }}" required
+                            <input type="hidden" id="total_breadth" name="total_breadth" value="{{ $total_breadth }}" required
                                 readonly />
-                            <input type="hidden" name="total_height" value="{{ $total_height }}" required
+                            <input type="hidden" id="total_height" name="total_height" value="{{ $total_height }}" required
                                 readonly />
-                            <input type="hidden" name="total_weight" value="{{ $total_weight }}"
+                            <input type="hidden" id="total_weight" name="total_weight" value="{{ $total_weight }}"
                                 class="form-control" required readonly />
                         </div>
 
@@ -409,6 +409,26 @@
             }
             // Disable the "Place Order" button and change the text to "Loading..."
             $('#place_order').prop('disabled', true).text('Loading...');
+
+             // Collect form data
+            let formData = {
+                postal_code: $('#pincode').val(),
+                zip: $('#pincode').val(),
+                first_name: $('#firstName').val(),
+                last_name: $('#lastName').val(),
+                email: $('#email').val(),
+                phone: $('#phone').val(),
+                address: $('#address').val(),
+                house: $('#house').val(),
+                city: $('#city').val(),
+                state: $('#state').val(),
+                country: $('#country').val(),
+                gst: $('#gst').val(),
+                message: $('#message').val(),
+               
+                payment_method: paymentMethod,
+                total_amount: total_amt
+            };
             // Check if Razorpay is selected as the payment method
             if (paymentMethod === 'Razorpay') {
                 $.ajax({
@@ -418,9 +438,7 @@
                         'X-CSRF-TOKEN': '{{ csrf_token() }}'
                     },
                     contentType: 'application/json',
-                    data: JSON.stringify({
-                        amount: total_amt
-                    }),
+                    data: JSON.stringify(formData), // Send form data to API
                     success: function(data) {
                         var options = {
                             key: data.key,
@@ -443,7 +461,9 @@
                                         razorpay_order_id: response
                                             .razorpay_order_id,
                                         razorpay_signature: response
-                                            .razorpay_signature
+                                            .razorpay_signature,
+                                        saved_order_id: data
+                                        .saved_order_id
                                     }),
                                     success: function(verification) {
                                         if (verification.error) {

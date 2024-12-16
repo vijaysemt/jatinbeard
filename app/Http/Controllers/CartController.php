@@ -538,15 +538,21 @@ class CartController extends Controller
         $api = new Api(config('services.razorpay.key'), config('services.razorpay.secret'));
         $orderData = [
             'receipt'         => 'order_rcpt_' . time(),
-            'amount'          => $request->amount * 100, // Amount in paise
+            'amount'          => $request->total_amount * 100, // Amount in paise
             'currency'        => 'INR',
             'payment_capture' => 1, // 1 for automatic capture, 0 for manual
         ];
 
         try {
             $order = $api->order->create($orderData); // Create Razorpay order
+           
+            Log::info('order created');
+            $input = $request->all();
+            $input['razorpay_order_id'] = $order['id'];
+            $saved_order = Order::create($input);
             return response()->json([
                 'order_id' => $order['id'],
+                'saved_order_id' => $saved_order->id,
                 'key'      => config('services.razorpay.key'),
             ]);
         } catch (\Exception $e) {
@@ -554,7 +560,7 @@ class CartController extends Controller
         }
     }
 
-    public function verifyPayment(Request $request)
+    public function verifyPayment(Request $request, ShiprocketService $shiprocketService)
     {
         $api = new Api(config('services.razorpay.key'), config('services.razorpay.secret'));
 
@@ -567,6 +573,29 @@ class CartController extends Controller
         try {
             $api->utility->verifyPaymentSignature($attributes); // Verifies payment
             Log::info('Razorpay Payment verified successfully');
+            $input = $request->all();
+            if ($input['payment_method'] === 'Razorpay') {
+                $guestUserId = $this->getGuestUserId();
+                $input['user_id'] = $guestUserId;
+                $input['shipment_id'] = '0';
+                //$razorpayOrder = $this->createRazorpayOrder($validatedData, $order);
+                $order = Order::find($input['saved_order_id']);
+                $order->razorpay_order_id = $request->razorpay_order_id;
+                $order->transaction_id = $request->razorpay_payment_id;
+                $order->save();
+                $shiprocketResponse = $this->createShiprocketOrder($shiprocketService, $input, $order);
+                Log::info('shiprocketResponse');
+                Log::info($shiprocketResponse);
+                if ($shiprocketResponse['status_code'] == 1) {
+                    $this->finalizeOrder($order, $shiprocketResponse, $input);
+                    $this->captureRazorpayPayment($input, $order->razorpay_order_id);
+                    Mail::to($input['email'])->send(new OrderMail($order));
+                    return redirect()->back()->with('success', 'Order placed and payment captured successfully!');
+                } else {
+                    session()->flash('error', 'Failed to create shipment with Shiprocket.');
+                    return redirect()->back()->with('error', 'Order failed: Shipment creation failed.');
+                }
+            }
             return response()->json(['message' => 'Payment verified successfully']);
         } catch (\Exception $e) {
             Log::info('Razorpay Payment verify error');
