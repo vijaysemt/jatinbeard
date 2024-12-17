@@ -411,6 +411,29 @@ class CartController extends Controller
         ]);
     }
 
+    protected function validateOnlineData($request)
+    {
+        return $request->validate([
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'phone' => ['required', 'numeric', 'regex:/^[1-9][0-9]{9}$/']
+            , [
+                'phone.required' => 'The phone number is required.',
+                'phone.numeric' => 'The phone number must be a valid number.',
+                'phone.regex' => 'The phone number must be exactly 10 digits and cannot start with 0.',
+            ],
+            'email' => 'required|string|email|max:255',
+            'address' => 'required|string|min:3|max:255',
+            'house' => 'required|string|min:3|max:255',
+            'city' => 'required|string|max:255',
+            'state' => 'required|string|max:255',
+            'country' => 'required|string|max:255',
+            'postal_code' => 'required|numeric|digits:6',
+            'zip' => 'required|numeric|digits:6',
+            'message' => 'nullable|string',
+        ]);
+    }
+
     protected function saveOrderItems($order, $orderItems)
     {
         foreach ($orderItems as $item) {
@@ -462,7 +485,8 @@ class CartController extends Controller
     {
         // Prepare order data for Shiprocket
         $orderData = $this->prepareShiprocketOrderData($validatedData, $order);
-
+        Log::info('orderData');
+        Log::info($orderData);
         // Create shipment using Shiprocket API
         return $shiprocketService->createOrder($orderData);
     }
@@ -478,7 +502,7 @@ class CartController extends Controller
 
         // Prepare the order data for Shiprocket API
         return [
-            'order_id' => $order->id,
+            'order_id' => "id_".$order->id,
             'order_date' => now(), // Current timestamp
             "channel_id" => "5631500", // Channel ID - should be checked if dynamic
             'pickup_location' => 'Primary', // Pickup location can be dynamic if needed
@@ -534,6 +558,8 @@ class CartController extends Controller
 
     public function createOrder(Request $request)
     {
+         $validatedData = $this->validateOnlineData($request);
+
         // $api = new Api(config('services.razorpay.key'), config('services.razorpay.secret'));
         $api = new Api(config('services.razorpay.key'), config('services.razorpay.secret'));
         $orderData = [
@@ -571,17 +597,37 @@ class CartController extends Controller
         ];
 
         try {
-            $api->utility->verifyPaymentSignature($attributes); // Verifies payment
+            $response = $api->utility->verifyPaymentSignature($attributes); // Verifies payment
+            Log::info('verifyPaymentSignature response');
+            Log::info($response);
             Log::info('Razorpay Payment verified successfully');
             $input = $request->all();
+            $guestUserId = $this->getGuestUserId();
+
+            $cartItems = Cart::where('user_id', $guestUserId)->with('product')->get();
+            foreach ($cartItems as $key => $value) {
+
+                $input['order_items'][] = [
+                    'product_name' => $value->product->name,
+                    'product_price' => $value->product->price,
+                    'quantity' => $value->quantity,
+                    'sku' => $value->product->sku,
+                    'hsn' => $value->product->hsn,
+                    'tax' => $value->product->tax
+                ];
+                
+            }
+            // $input['order_items'] = json_encode($input['order_items']);
+            Log::info('input');
+            Log::info($input);
             if ($input['payment_method'] === 'Razorpay') {
-                $guestUserId = $this->getGuestUserId();
                 $input['user_id'] = $guestUserId;
                 $input['shipment_id'] = '0';
                 //$razorpayOrder = $this->createRazorpayOrder($validatedData, $order);
                 $order = Order::find($input['saved_order_id']);
                 $order->razorpay_order_id = $request->razorpay_order_id;
                 $order->transaction_id = $request->razorpay_payment_id;
+                $order->payment_status = '1';
                 $order->save();
                 $shiprocketResponse = $this->createShiprocketOrder($shiprocketService, $input, $order);
                 Log::info('shiprocketResponse');
@@ -590,10 +636,11 @@ class CartController extends Controller
                     $this->finalizeOrder($order, $shiprocketResponse, $input);
                     $this->captureRazorpayPayment($input, $order->razorpay_order_id);
                     Mail::to($input['email'])->send(new OrderMail($order));
-                    return redirect()->back()->with('success', 'Order placed and payment captured successfully!');
+                    session()->flash('success', 'Order placed and payment captured successfully!');
+                    return response()->json(['message' => 'Order placed and payment captured successfully!']);
                 } else {
                     session()->flash('error', 'Failed to create shipment with Shiprocket.');
-                    return redirect()->back()->with('error', 'Order failed: Shipment creation failed.');
+                    return response()->json(['message' => 'Order failed: Shipment creation failed.']);
                 }
             }
             return response()->json(['message' => 'Payment verified successfully']);

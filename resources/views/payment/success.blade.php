@@ -108,7 +108,8 @@
 
                             <!-- Payment Info -->
                             <!--<p><strong>Payment Status:</strong> {{ $order->payment_status }}</p>-->
-                            <p><strong>Payment Date:</strong> {{ $order->created_at->format('d M, Y h:i A') }}</p>
+                            <p><strong>Payment Date:</strong> {{ $order->created_at->timezone('Asia/Kolkata')->format('d M, Y h:i A') }}</p>
+
                         </div>
 
                         <!-- Button to go back to homepage or view orders -->

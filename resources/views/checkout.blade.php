@@ -343,6 +343,20 @@
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script>
     let total_amt = "{{ $total + $totalDeliveryCharge }}";
+    // let cart_items = "{{ $cartItems }}";
+    // // Decode the HTML entities (e.g., &quot; -> ")
+    // let decodedCartItems = $("<div>").html(cart_items).text();
+    //     console.log('decodedCartItems', decodedCartItems);
+    // // Parse the JSON string into a JavaScript object
+    // let cartItemsArray = JSON.stringify(decodedCartItems);
+    // // console.log('cartItemsArray', cartItemsArray);
+    // cartItemsArray = JSON.parse(cartItemsArray);
+    // cartItemsArray = JSON.parse(cartItemsArray);
+
+    // // Now cartItemsArray will be a valid JavaScript array
+    // console.log('cartItemsArray', cartItemsArray);
+
+    
     $(document).ready(function() {
 
         console.log('myVariable', total_amt);
@@ -423,6 +437,28 @@
                 payment_method: paymentMethod,
                 total_amount: total_amt
             };
+            let order_items = [];
+            // cartItemsArray.forEach(element => {
+            //     let item = {
+            //         product_name:element.product.name,
+            //         product_price:element.product.price,
+            //         quantity:element.quantity,
+            //         sku:element.product.sku,
+            //         hsn:element.product.hsn,
+            //         tax:element.product.tax,
+            //     }
+            //     order_items.push(item);
+            //     console.log(element);
+            // });
+            let shiprocket_data = {
+                ...formData,
+                order_items:order_items,
+                total_length:$('#total_length').val(),
+                total_breadth:$('#total_breadth').val(),
+                total_height:$('#total_height').val(),
+                total_weight:$('#total_weight').val(),
+            }
+            console.log('shiprocket_data',shiprocket_data);
             // Check if Razorpay is selected as the payment method
             if (paymentMethod === 'Razorpay') {
                 $.ajax({
@@ -457,7 +493,8 @@
                                         razorpay_signature: response
                                             .razorpay_signature,
                                         saved_order_id: data
-                                        .saved_order_id
+                                        .saved_order_id,
+                                        ...shiprocket_data
                                     }),
                                     success: function(verification) {
                                         if (verification.error) {
@@ -489,9 +526,11 @@
                                                     .razorpay_order_id
                                             }).appendTo(
                                                 '#orderForm');
-
+                                                $('#place_order').prop('disabled', true).text('Place Order');
+                                                window.location.href = 'payment-success/'+data.saved_order_id;
+                                               
                                             // Submit the form with the Razorpay payment ID
-                                            $('#orderForm').submit();
+                                            // $('#orderForm').submit();
                                         }
                                     },
                                     error: function(xhr, status, error) {
@@ -514,8 +553,11 @@
                                 "color": "#3399cc"
                             },
                             "modal": {
+                                "escape": true, // To allow closing modal manually
                                 "ondismiss": function() {
+                                    console.log("User exited the payment process or closed the modal.");
                                     alert('Payment process was cancelled.');
+                                    $('#place_order').prop('disabled', false).text('Place Order');
                                 }
                             }
                         };
@@ -525,6 +567,22 @@
                     },
                     error: function(xhr, status, error) {
                         console.error('Order creation failed:', error);
+                         // Parse the response text into a JavaScript object
+                        let responseObject = JSON.parse(xhr.responseText);
+                        
+                        // Loop through the errors and display them
+                        if (responseObject.errors) {
+                            Object.keys(responseObject.errors).forEach(function(field) {
+                                // For each error in the "errors" object, create a div with the error message
+                                responseObject.errors[field].forEach(function(errorMessage) {
+                                    // Display the error on the page (you can customize how to display the error)
+                                    console.log("Error for " + field + ": " + errorMessage);
+                                    // For example, you could append the error message to an error container
+                                    $('#' + field).addClass('is-invalid'); // Add the invalid class to the field
+                                    $('#' + field).after('<div class="invalid-feedback">' + errorMessage + '</div>');
+                                });
+                            });
+                        }
                         $('#place_order').prop('disabled', false).text('Place Order');
                     }
                 });
